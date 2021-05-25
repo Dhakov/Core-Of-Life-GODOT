@@ -1,0 +1,528 @@
+[gd_scene load_steps=61 format=2]
+
+[ext_resource path="res://assets/player/anim_player_idle.png" type="Texture" id=1]
+[ext_resource path="res://assets/player/anim_player_run.png" type="Texture" id=2]
+[ext_resource path="res://assets/player/anim_player_crouch.png" type="Texture" id=3]
+[ext_resource path="res://assets/player/anim_player_crouch_run.png" type="Texture" id=4]
+[ext_resource path="res://assets/player/Player.gd" type="Script" id=5]
+[ext_resource path="res://assets/player/FootstepSound.gd" type="Script" id=6]
+[ext_resource path="res://assets/player/sounds/snd_player_grass_footstep_2.wav" type="AudioStream" id=7]
+[ext_resource path="res://assets/lights/sprite_light.png" type="Texture" id=8]
+[ext_resource path="res://assets/player/anim_player_jump_start.png" type="Texture" id=9]
+[ext_resource path="res://assets/player/anim_player_jump_fall.png" type="Texture" id=10]
+[ext_resource path="res://assets/player/sounds/snd_player_grass_fall.wav" type="AudioStream" id=11]
+[ext_resource path="res://assets/player/SoundGrassFall.gd" type="Script" id=12]
+[ext_resource path="res://assets/particles/JumpParticle.tscn" type="PackedScene" id=13]
+[ext_resource path="res://assets/particles/FootstepParticle.tscn" type="PackedScene" id=14]
+
+[sub_resource type="RectangleShape2D" id=1]
+extents = Vector2( 5, 15 )
+
+[sub_resource type="AtlasTexture" id=2]
+atlas = ExtResource( 1 )
+region = Rect2( 0, 0, 32, 40 )
+
+[sub_resource type="AtlasTexture" id=3]
+atlas = ExtResource( 1 )
+region = Rect2( 32, 0, 32, 40 )
+
+[sub_resource type="AtlasTexture" id=4]
+atlas = ExtResource( 1 )
+region = Rect2( 64, 0, 32, 40 )
+
+[sub_resource type="AtlasTexture" id=5]
+atlas = ExtResource( 1 )
+region = Rect2( 96, 0, 32, 40 )
+
+[sub_resource type="AtlasTexture" id=6]
+atlas = ExtResource( 1 )
+region = Rect2( 128, 0, 32, 40 )
+
+[sub_resource type="AtlasTexture" id=7]
+atlas = ExtResource( 1 )
+region = Rect2( 160, 0, 32, 40 )
+
+[sub_resource type="AtlasTexture" id=8]
+atlas = ExtResource( 1 )
+region = Rect2( 192, 0, 32, 40 )
+
+[sub_resource type="AtlasTexture" id=9]
+atlas = ExtResource( 3 )
+region = Rect2( 0, 0, 32, 40 )
+
+[sub_resource type="AtlasTexture" id=10]
+atlas = ExtResource( 3 )
+region = Rect2( 32, 0, 32, 40 )
+
+[sub_resource type="AtlasTexture" id=11]
+atlas = ExtResource( 3 )
+region = Rect2( 64, 0, 32, 40 )
+
+[sub_resource type="AtlasTexture" id=12]
+atlas = ExtResource( 3 )
+region = Rect2( 96, 0, 32, 40 )
+
+[sub_resource type="AtlasTexture" id=13]
+atlas = ExtResource( 3 )
+region = Rect2( 128, 0, 32, 40 )
+
+[sub_resource type="AtlasTexture" id=14]
+atlas = ExtResource( 3 )
+region = Rect2( 160, 0, 32, 40 )
+
+[sub_resource type="AtlasTexture" id=15]
+atlas = ExtResource( 3 )
+region = Rect2( 192, 0, 32, 40 )
+
+[sub_resource type="AtlasTexture" id=16]
+atlas = ExtResource( 10 )
+region = Rect2( 0, 0, 32, 40 )
+
+[sub_resource type="AtlasTexture" id=17]
+atlas = ExtResource( 10 )
+region = Rect2( 32, 0, 32, 40 )
+
+[sub_resource type="AtlasTexture" id=18]
+atlas = ExtResource( 10 )
+region = Rect2( 64, 0, 32, 40 )
+
+[sub_resource type="AtlasTexture" id=19]
+atlas = ExtResource( 10 )
+region = Rect2( 96, 0, 32, 40 )
+
+[sub_resource type="AtlasTexture" id=20]
+atlas = ExtResource( 4 )
+region = Rect2( 0, 0, 32, 40 )
+
+[sub_resource type="AtlasTexture" id=21]
+atlas = ExtResource( 4 )
+region = Rect2( 32, 0, 32, 40 )
+
+[sub_resource type="AtlasTexture" id=22]
+atlas = ExtResource( 4 )
+region = Rect2( 64, 0, 32, 40 )
+
+[sub_resource type="AtlasTexture" id=23]
+atlas = ExtResource( 4 )
+region = Rect2( 96, 0, 32, 40 )
+
+[sub_resource type="AtlasTexture" id=24]
+atlas = ExtResource( 4 )
+region = Rect2( 128, 0, 32, 40 )
+
+[sub_resource type="AtlasTexture" id=25]
+atlas = ExtResource( 4 )
+region = Rect2( 160, 0, 32, 40 )
+
+[sub_resource type="AtlasTexture" id=26]
+atlas = ExtResource( 4 )
+region = Rect2( 192, 0, 32, 40 )
+
+[sub_resource type="AtlasTexture" id=27]
+atlas = ExtResource( 2 )
+region = Rect2( 0, 0, 32, 40 )
+
+[sub_resource type="AtlasTexture" id=28]
+atlas = ExtResource( 2 )
+region = Rect2( 32, 0, 32, 40 )
+
+[sub_resource type="AtlasTexture" id=29]
+atlas = ExtResource( 2 )
+region = Rect2( 64, 0, 32, 40 )
+
+[sub_resource type="AtlasTexture" id=30]
+atlas = ExtResource( 2 )
+region = Rect2( 96, 0, 32, 40 )
+
+[sub_resource type="AtlasTexture" id=31]
+atlas = ExtResource( 2 )
+region = Rect2( 128, 0, 32, 40 )
+
+[sub_resource type="AtlasTexture" id=32]
+atlas = ExtResource( 2 )
+region = Rect2( 160, 0, 32, 40 )
+
+[sub_resource type="AtlasTexture" id=33]
+atlas = ExtResource( 2 )
+region = Rect2( 192, 0, 32, 40 )
+
+[sub_resource type="AtlasTexture" id=34]
+atlas = ExtResource( 2 )
+region = Rect2( 224, 0, 32, 40 )
+
+[sub_resource type="AtlasTexture" id=35]
+atlas = ExtResource( 9 )
+region = Rect2( 0, 0, 32, 40 )
+
+[sub_resource type="AtlasTexture" id=36]
+atlas = ExtResource( 9 )
+region = Rect2( 32, 0, 32, 40 )
+
+[sub_resource type="AtlasTexture" id=37]
+atlas = ExtResource( 9 )
+region = Rect2( 64, 0, 32, 40 )
+
+[sub_resource type="AtlasTexture" id=38]
+atlas = ExtResource( 9 )
+region = Rect2( 96, 0, 32, 40 )
+
+[sub_resource type="AtlasTexture" id=39]
+atlas = ExtResource( 9 )
+region = Rect2( 128, 0, 32, 40 )
+
+[sub_resource type="SpriteFrames" id=40]
+animations = [ {
+"frames": [ SubResource( 2 ), SubResource( 3 ), SubResource( 4 ), SubResource( 5 ), SubResource( 6 ), SubResource( 7 ), SubResource( 8 ) ],
+"loop": true,
+"name": "idle",
+"speed": 5.0
+}, {
+"frames": [ SubResource( 9 ), SubResource( 10 ), SubResource( 11 ), SubResource( 12 ), SubResource( 13 ), SubResource( 14 ), SubResource( 15 ) ],
+"loop": true,
+"name": "crouch",
+"speed": 5.0
+}, {
+"frames": [ SubResource( 16 ), SubResource( 17 ), SubResource( 18 ), SubResource( 19 ) ],
+"loop": true,
+"name": "jump_fall",
+"speed": 5.0
+}, {
+"frames": [ SubResource( 20 ), SubResource( 21 ), SubResource( 22 ), SubResource( 23 ), SubResource( 24 ), SubResource( 25 ), SubResource( 26 ) ],
+"loop": true,
+"name": "crouch_run",
+"speed": 5.0
+}, {
+"frames": [ SubResource( 27 ), SubResource( 28 ), SubResource( 29 ), SubResource( 30 ), SubResource( 31 ), SubResource( 32 ), SubResource( 33 ), SubResource( 34 ) ],
+"loop": true,
+"name": "run",
+"speed": 5.0
+}, {
+"frames": [ SubResource( 35 ), SubResource( 36 ), SubResource( 37 ), SubResource( 38 ), SubResource( 39 ) ],
+"loop": true,
+"name": "jump_start",
+"speed": 5.0
+} ]
+
+[sub_resource type="Animation" id=41]
+length = 0.7
+loop = true
+tracks/0/type = "value"
+tracks/0/path = NodePath(".:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6 ),
+"transitions": PoolRealArray( 1, 1, 1, 1, 1, 1, 1 ),
+"update": 1,
+"values": [ 0, 1, 2, 3, 4, 5, 6 ]
+}
+tracks/1/type = "value"
+tracks/1/path = NodePath(".:animation")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 1,
+"values": [ "crouch" ]
+}
+tracks/2/type = "value"
+tracks/2/path = NodePath("AnimationPlayer:playback_speed")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ 0.6 ]
+}
+
+[sub_resource type="Animation" id=42]
+length = 0.7
+loop = true
+tracks/0/type = "value"
+tracks/0/path = NodePath(".:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6 ),
+"transitions": PoolRealArray( 1, 1, 1, 1, 1, 1, 1 ),
+"update": 1,
+"values": [ 0, 1, 2, 3, 4, 5, 6 ]
+}
+tracks/1/type = "value"
+tracks/1/path = NodePath(".:animation")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 1,
+"values": [ "crouch_run" ]
+}
+tracks/2/type = "value"
+tracks/2/path = NodePath("AnimationPlayer:playback_speed")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ 1.0 ]
+}
+
+[sub_resource type="Animation" id=43]
+length = 0.7
+loop = true
+tracks/0/type = "value"
+tracks/0/path = NodePath(".:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6 ),
+"transitions": PoolRealArray( 1, 1, 1, 1, 1, 1, 1 ),
+"update": 1,
+"values": [ 0, 1, 2, 3, 4, 5, 6 ]
+}
+tracks/1/type = "value"
+tracks/1/path = NodePath(".:animation")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 1,
+"values": [ "idle" ]
+}
+tracks/2/type = "value"
+tracks/2/path = NodePath("AnimationPlayer:playback_speed")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ 0.6 ]
+}
+
+[sub_resource type="Animation" id=44]
+resource_name = "jump_fall"
+length = 0.4
+tracks/0/type = "value"
+tracks/0/path = NodePath(".:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 0.1, 0.2, 0.3 ),
+"transitions": PoolRealArray( 1, 1, 1, 1 ),
+"update": 1,
+"values": [ 0, 1, 2, 3 ]
+}
+tracks/1/type = "value"
+tracks/1/path = NodePath(".:animation")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 1,
+"values": [ "jump_fall" ]
+}
+tracks/2/type = "value"
+tracks/2/path = NodePath("AnimationPlayer:playback_speed")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/keys = {
+"times": PoolRealArray( 0, 0.2, 0.4 ),
+"transitions": PoolRealArray( 1, 1, 1 ),
+"update": 0,
+"values": [ 2.0, 3.0, 0.0 ]
+}
+
+[sub_resource type="Animation" id=45]
+resource_name = "jump_start"
+length = 0.5
+tracks/0/type = "value"
+tracks/0/path = NodePath(".:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 0.1, 0.2, 0.3, 0.4 ),
+"transitions": PoolRealArray( 1, 1, 1, 1, 1 ),
+"update": 1,
+"values": [ 0, 1, 2, 3, 4 ]
+}
+tracks/1/type = "value"
+tracks/1/path = NodePath(".:animation")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 1,
+"values": [ "jump_start" ]
+}
+tracks/2/type = "value"
+tracks/2/path = NodePath("AnimationPlayer:playback_speed")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/keys = {
+"times": PoolRealArray( 0, 0.4, 0.5 ),
+"transitions": PoolRealArray( 1, 1, 1 ),
+"update": 0,
+"values": [ 2.5, 1.8, 0.0 ]
+}
+
+[sub_resource type="Animation" id=46]
+length = 0.8
+loop = true
+tracks/0/type = "value"
+tracks/0/path = NodePath(".:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7 ),
+"transitions": PoolRealArray( 1, 1, 1, 1, 1, 1, 1, 1 ),
+"update": 1,
+"values": [ 0, 1, 2, 3, 4, 5, 6, 7 ]
+}
+tracks/1/type = "value"
+tracks/1/path = NodePath(".:animation")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 1,
+"values": [ "run" ]
+}
+tracks/2/type = "value"
+tracks/2/path = NodePath("AnimationPlayer/FootstepSound:playing")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/keys = {
+"times": PoolRealArray( 0.1, 0.5 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 1,
+"values": [ true, true ]
+}
+tracks/3/type = "value"
+tracks/3/path = NodePath("AnimationPlayer:playback_speed")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ 1.0 ]
+}
+tracks/4/type = "method"
+tracks/4/path = NodePath("..")
+tracks/4/interp = 1
+tracks/4/loop_wrap = true
+tracks/4/imported = false
+tracks/4/enabled = true
+tracks/4/keys = {
+"times": PoolRealArray( 0.1, 0.5 ),
+"transitions": PoolRealArray( 1, 1 ),
+"values": [ {
+"args": [  ],
+"method": "createFootstep"
+}, {
+"args": [  ],
+"method": "createFootstep"
+} ]
+}
+
+[node name="Player" type="KinematicBody2D"]
+script = ExtResource( 5 )
+footstepPart = ExtResource( 14 )
+jumpPart = ExtResource( 13 )
+
+[node name="Light2D" type="Light2D" parent="."]
+position = Vector2( 0, -17 )
+z_index = -1
+texture = ExtResource( 8 )
+texture_scale = 0.5
+color = Color( 1, 0.65098, 0.419608, 1 )
+energy = 0.5
+shadow_enabled = true
+shadow_buffer_size = 128
+shadow_gradient_length = 6.0
+shadow_filter = 1
+shadow_filter_smooth = 3.0
+__meta__ = {
+"_edit_lock_": true
+}
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2( 0, -15 )
+z_index = 1
+shape = SubResource( 1 )
+
+[node name="AnimatedSprite" type="AnimatedSprite" parent="."]
+position = Vector2( 0, -20 )
+frames = SubResource( 40 )
+animation = "run"
+__meta__ = {
+"_edit_lock_": true
+}
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="AnimatedSprite"]
+autoplay = "idle"
+anims/crouch = SubResource( 41 )
+anims/crouch_run = SubResource( 42 )
+anims/idle = SubResource( 43 )
+anims/jump_fall = SubResource( 44 )
+anims/jump_start = SubResource( 45 )
+anims/run = SubResource( 46 )
+
+[node name="FootstepSound" type="AudioStreamPlayer" parent="AnimatedSprite/AnimationPlayer"]
+stream = ExtResource( 7 )
+volume_db = -30.0
+script = ExtResource( 6 )
+
+[node name="Sounds" type="Node2D" parent="."]
+
+[node name="SoundGrassFall" type="AudioStreamPlayer" parent="Sounds"]
+stream = ExtResource( 11 )
+volume_db = -30.0
+script = ExtResource( 12 )

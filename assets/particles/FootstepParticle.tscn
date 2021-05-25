@@ -1,0 +1,65 @@
+[gd_scene load_steps=5 format=2]
+
+[sub_resource type="Curve" id=1]
+_data = [ Vector2( 0, 0 ), 0.0, 1.24364, 0, 0, Vector2( 0.164474, 1 ), 0.0, 0.0, 0, 0, Vector2( 0.506579, 0 ), 0.0, 0.0, 0, 0 ]
+
+[sub_resource type="CurveTexture" id=2]
+curve = SubResource( 1 )
+
+[sub_resource type="ParticlesMaterial" id=3]
+emission_shape = 1
+emission_sphere_radius = 2.49
+flag_disable_z = true
+direction = Vector3( 0, -1, 0 )
+gravity = Vector3( 0, 80, 0 )
+initial_velocity = 69.94
+initial_velocity_random = 0.7
+orbit_velocity = 0.0
+orbit_velocity_random = 0.0
+angle = 468.8
+angle_random = 1.0
+scale = 2.0
+scale_curve = SubResource( 2 )
+color = Color( 0.662745, 0.517647, 0.376471, 0.564706 )
+
+[sub_resource type="Animation" id=4]
+resource_name = "default"
+length = 0.5
+tracks/0/type = "value"
+tracks/0/path = NodePath(".:emitting")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 1,
+"values": [ true ]
+}
+tracks/1/type = "method"
+tracks/1/path = NodePath(".")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"times": PoolRealArray( 0.4 ),
+"transitions": PoolRealArray( 1 ),
+"values": [ {
+"args": [  ],
+"method": "queue_free"
+} ]
+}
+
+[node name="FootstepParticle" type="Particles2D"]
+emitting = false
+amount = 70
+lifetime = 0.4
+one_shot = true
+explosiveness = 0.4
+process_material = SubResource( 3 )
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+autoplay = "default"
+anims/default = SubResource( 4 )
