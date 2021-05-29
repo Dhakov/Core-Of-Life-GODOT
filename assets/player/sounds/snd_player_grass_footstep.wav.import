@@ -1,0 +1,21 @@
+[remap]
+
+importer="wav"
+type="AudioStreamSample"
+path="res://.import/snd_player_grass_footstep.wav-a5fcc7b0a54d9377180b4aa59be13349.sample"
+
+[deps]
+
+source_file="res://assets/player/sounds/snd_player_grass_footstep.wav"
+dest_files=[ "res://.import/snd_player_grass_footstep.wav-a5fcc7b0a54d9377180b4aa59be13349.sample" ]
+
+[params]
+
+force/8_bit=false
+force/mono=false
+force/max_rate=false
+force/max_rate_hz=44100
+edit/trim=false
+edit/normalize=false
+edit/loop=false
+compress/mode=0

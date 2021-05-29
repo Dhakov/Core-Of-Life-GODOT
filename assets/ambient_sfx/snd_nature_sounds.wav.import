@@ -1,0 +1,21 @@
+[remap]
+
+importer="wav"
+type="AudioStreamSample"
+path="res://.import/snd_nature_sounds.wav-5d104331d0b60d017c28c43701a751a7.sample"
+
+[deps]
+
+source_file="res://assets/ambient_sfx/snd_nature_sounds.wav"
+dest_files=[ "res://.import/snd_nature_sounds.wav-5d104331d0b60d017c28c43701a751a7.sample" ]
+
+[params]
+
+force/8_bit=false
+force/mono=false
+force/max_rate=false
+force/max_rate_hz=44100
+edit/trim=false
+edit/normalize=false
+edit/loop=true
+compress/mode=0

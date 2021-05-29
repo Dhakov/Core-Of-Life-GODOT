@@ -1,0 +1,21 @@
+[remap]
+
+importer="wav"
+type="AudioStreamSample"
+path="res://.import/snd_slash_attack_2.wav-a0e1e6d6bf50a6c510d78dbab8e3c6a6.sample"
+
+[deps]
+
+source_file="res://assets/player/sounds/combat_sounds/snd_slash_attack_2.wav"
+dest_files=[ "res://.import/snd_slash_attack_2.wav-a0e1e6d6bf50a6c510d78dbab8e3c6a6.sample" ]
+
+[params]
+
+force/8_bit=false
+force/mono=false
+force/max_rate=false
+force/max_rate_hz=44100
+edit/trim=false
+edit/normalize=false
+edit/loop=false
+compress/mode=0

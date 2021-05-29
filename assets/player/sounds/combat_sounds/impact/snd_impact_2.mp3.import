@@ -1,0 +1,15 @@
+[remap]
+
+importer="mp3"
+type="AudioStreamMP3"
+path="res://.import/snd_impact_2.mp3-eb98b86a4633d3234110a9fc863c1732.mp3str"
+
+[deps]
+
+source_file="res://assets/player/sounds/combat_sounds/impact/snd_impact_2.mp3"
+dest_files=[ "res://.import/snd_impact_2.mp3-eb98b86a4633d3234110a9fc863c1732.mp3str" ]
+
+[params]
+
+loop=false
+loop_offset=0

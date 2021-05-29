@@ -1,0 +1,17 @@
+[gd_scene load_steps=2 format=2]
+
+[ext_resource path="res://world/Camera2D.gd" type="Script" id=1]
+
+[node name="Camera2D" type="Camera2D"]
+position = Vector2( -0.279999, -19.5174 )
+current = true
+zoom = Vector2( 1.25, 1.25 )
+smoothing_speed = 10.0
+offset_v = -0.5
+script = ExtResource( 1 )
+
+[node name="Timer" type="Timer" parent="."]
+
+[node name="Tween" type="Tween" parent="."]
+
+[connection signal="timeout" from="Timer" to="." method="_on_Timer_timeout"]

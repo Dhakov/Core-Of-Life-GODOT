@@ -1,19 +1,40 @@
 extends Camera2D
 
 
-#onready var player = get_parent();
-#
-#
-## Called when the node enters the scene tree for the first time.
-#func _ready():
-#	pass # Replace with function body.
-#
-#
-## Called every frame. 'delta' is the elapsed time since the previous frame.
-#func _process(delta):
-#	var target = player.position;
-#	var target_pos_x;
-#	var target_pos_y;
-#	target_pos_x = int(lerp(position.x, target.x, 0.1));
-#	target_pos_y = int(lerp(position.y, target.y, 0.1));
-#	global_position = Vector2(target_pos_x, target_pos_y);
+onready var shake_timer = $Timer;
+onready var tween = $Tween;
+
+var shake_amount = 0;
+var default_offset = offset;
+
+
+func _ready():
+	Global.camera = self;
+
+
+func _process(delta):
+	offset = Vector2(rand_range(-shake_amount, shake_amount), 
+	rand_range(shake_amount, -shake_amount)) * delta
+
+
+func cam_shake(new_shake, shake_time, shake_limit):
+	shake_amount += new_shake
+	if shake_amount > shake_limit:
+		shake_amount = shake_limit
+	
+	shake_timer.wait_time = shake_time
+	
+	tween.stop_all()
+	set_process(true)
+	shake_timer.start()
+
+
+func _on_Timer_timeout():
+	shake_amount = 0
+#	set_process(false)
+	
+	tween.interpolate_property(self, "offset", offset, default_offset, 
+	0.1, Tween.TRANS_QUAD, Tween.EASE_IN_OUT)
+	
+	tween.start()
+	
