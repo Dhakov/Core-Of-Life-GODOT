@@ -24,7 +24,10 @@ func _ready():
 	$TextureProgress.value = 100;     
 	 
 func _process(delta):
-	second_health_points = lerp(second_health_points, health.value, delta * 5);
+	if health.value < second_health_points:
+		second_health_points = lerp(second_health_points, health.value, delta * 1);
+	else:
+		second_health_points = health.value;
 	second_health.value = second_health_points;
 	
 	rect_position = (Vector2(rand_range(-shake_amount, shake_amount), 

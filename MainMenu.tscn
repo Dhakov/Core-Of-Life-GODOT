@@ -1,0 +1,75 @@
+[gd_scene load_steps=3 format=2]
+
+[ext_resource path="res://Play.gd" type="Script" id=1]
+[ext_resource path="res://Exit.gd" type="Script" id=2]
+
+[node name="MainMenu" type="Node2D"]
+
+[node name="Control" type="Control" parent="."]
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Label" type="Label" parent="Control"]
+margin_left = 113.0
+margin_top = 38.0
+margin_right = 205.0
+margin_bottom = 58.0
+text = "CORE OF LIFE"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Play" type="Button" parent="Control"]
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+margin_left = 110.0
+margin_top = 76.0
+margin_right = 205.0
+margin_bottom = 96.0
+focus_neighbour_top = NodePath(".")
+focus_neighbour_bottom = NodePath("../Exit")
+focus_mode = 1
+text = "Play"
+script = ExtResource( 1 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Exit" type="Button" parent="Control"]
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+margin_left = 117.0
+margin_top = 100.0
+margin_right = 199.0
+margin_bottom = 120.0
+focus_neighbour_top = NodePath("../Play")
+focus_neighbour_bottom = NodePath("../Credits")
+text = "Exit"
+script = ExtResource( 2 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Credits" type="Button" parent="Control"]
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+margin_left = 122.0
+margin_top = 126.0
+margin_right = 195.0
+margin_bottom = 146.0
+focus_neighbour_top = NodePath("../Exit")
+focus_neighbour_bottom = NodePath("../Play")
+text = "Credits"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[connection signal="pressed" from="Control/Play" to="Control/Play" method="_on_Play_pressed"]
+[connection signal="pressed" from="Control/Exit" to="Control/Exit" method="_on_Exit_pressed"]

@@ -107,24 +107,24 @@ __meta__ = {
 }
 
 [node name="TextureProgress" type="TextureProgress" parent="."]
-modulate = Color( 0.813, 1, 0.66, 1 )
+self_modulate = Color( 1.73, 100, 0, 1 )
 show_behind_parent = true
 margin_left = 2.0
 margin_top = 2.0
 margin_right = 70.0
 margin_bottom = 6.0
-value = 80.0
+value = 60.0
 texture_progress = ExtResource( 2 )
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
 [node name="TextureProgress2" type="TextureProgress" parent="TextureProgress"]
-modulate = Color( 1, 0.054902, 0.054902, 1 )
+self_modulate = Color( 3, 0, 0, 1 )
 show_behind_parent = true
 margin_right = 68.0
 margin_bottom = 4.0
-value = 100.0
+value = 80.0
 texture_under = ExtResource( 5 )
 texture_progress = ExtResource( 2 )
 nine_patch_stretch = true
@@ -133,11 +133,11 @@ __meta__ = {
 }
 
 [node name="AnimatedSprite" type="AnimatedSprite" parent="."]
-position = Vector2( -12, 14 )
+position = Vector2( -11.3055, 13.9504 )
 scale = Vector2( 0.7, 0.7 )
 frames = SubResource( 20 )
 animation = "idle"
-frame = 11
+frame = 13
 playing = true
 
 [node name="Timer" type="Timer" parent="."]

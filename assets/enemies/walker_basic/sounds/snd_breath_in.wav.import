@@ -1,0 +1,21 @@
+[remap]
+
+importer="wav"
+type="AudioStreamSample"
+path="res://.import/snd_breath_in.wav-398698794e0082a019e1eb24138eae1f.sample"
+
+[deps]
+
+source_file="res://assets/enemies/walker_basic/sounds/snd_breath_in.wav"
+dest_files=[ "res://.import/snd_breath_in.wav-398698794e0082a019e1eb24138eae1f.sample" ]
+
+[params]
+
+force/8_bit=false
+force/mono=false
+force/max_rate=false
+force/max_rate_hz=44100
+edit/trim=false
+edit/normalize=false
+edit/loop=false
+compress/mode=0

@@ -1,0 +1,21 @@
+[remap]
+
+importer="wav"
+type="AudioStreamSample"
+path="res://.import/snd_mfusil_shot_v3.wav-67cf895d272c4843d23caea15668d0bc.sample"
+
+[deps]
+
+source_file="res://assets/player/weapon/Fusiles/Fusil de Asalto Militar/snd_mfusil_shot_v3.wav"
+dest_files=[ "res://.import/snd_mfusil_shot_v3.wav-67cf895d272c4843d23caea15668d0bc.sample" ]
+
+[params]
+
+force/8_bit=false
+force/mono=false
+force/max_rate=false
+force/max_rate_hz=44100
+edit/trim=false
+edit/normalize=false
+edit/loop=false
+compress/mode=0

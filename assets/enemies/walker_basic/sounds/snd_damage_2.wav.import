@@ -1,0 +1,21 @@
+[remap]
+
+importer="wav"
+type="AudioStreamSample"
+path="res://.import/snd_damage_2.wav-ee572e06f3a21ffd4fd3bcf986f73a51.sample"
+
+[deps]
+
+source_file="res://assets/enemies/walker_basic/sounds/snd_damage_2.wav"
+dest_files=[ "res://.import/snd_damage_2.wav-ee572e06f3a21ffd4fd3bcf986f73a51.sample" ]
+
+[params]
+
+force/8_bit=false
+force/mono=false
+force/max_rate=false
+force/max_rate_hz=44100
+edit/trim=false
+edit/normalize=false
+edit/loop=false
+compress/mode=0

@@ -1,0 +1,49 @@
+[gd_scene load_steps=5 format=2]
+
+[ext_resource path="res://assets/UI/HealthBar.gd" type="Script" id=1]
+[ext_resource path="res://assets/UI/ui_hp_border.png" type="Texture" id=2]
+[ext_resource path="res://assets/UI/ui_hp.png" type="Texture" id=3]
+[ext_resource path="res://assets/UI/ui_hp_back.png" type="Texture" id=4]
+
+[node name="EnemyHealthBar" type="TextureRect"]
+self_modulate = Color( 0, 0, 0, 1 )
+margin_left = -16.0
+margin_top = -49.0
+margin_right = 19.0
+margin_bottom = -46.0
+texture = ExtResource( 2 )
+expand = true
+stretch_mode = 7
+script = ExtResource( 1 )
+__meta__ = {
+"_edit_group_": true,
+"_edit_use_anchors_": false
+}
+
+[node name="TextureProgress" type="TextureProgress" parent="."]
+self_modulate = Color( 100, 0.65, 0, 1 )
+show_behind_parent = true
+anchor_left = 0.029
+anchor_right = 0.029
+margin_left = -0.015
+margin_right = 32.985
+margin_bottom = 3.0
+value = 50.0
+texture_progress = ExtResource( 3 )
+nine_patch_stretch = true
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="TextureProgress2" type="TextureProgress" parent="TextureProgress"]
+self_modulate = Color( 3, 0, 0, 1 )
+show_behind_parent = true
+margin_right = 33.0
+margin_bottom = 3.0
+value = 80.0
+texture_under = ExtResource( 4 )
+texture_progress = ExtResource( 3 )
+nine_patch_stretch = true
+__meta__ = {
+"_edit_use_anchors_": false
+}

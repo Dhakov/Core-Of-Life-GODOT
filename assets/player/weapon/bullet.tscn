@@ -1,0 +1,48 @@
+[gd_scene load_steps=7 format=2]
+
+[ext_resource path="res://world/RigidBody2D.gd" type="Script" id=1]
+[ext_resource path="res://assets/player/weapon/spr_heavy_bullet.png" type="Texture" id=2]
+[ext_resource path="res://assets/player/weapon/Particles/BulletImpact.tscn" type="PackedScene" id=3]
+[ext_resource path="res://assets/player/weapon/Particles/BulletSmoke.tscn" type="PackedScene" id=4]
+[ext_resource path="res://assets/lights/sprite_light.png" type="Texture" id=5]
+
+[sub_resource type="RectangleShape2D" id=1]
+extents = Vector2( 4, 1 )
+
+[node name="bullet" type="RigidBody2D"]
+collision_layer = 8
+collision_mask = 5
+mass = 0.00102041
+gravity_scale = 0.0
+contacts_reported = 1
+contact_monitor = true
+script = ExtResource( 1 )
+smokeScene = ExtResource( 4 )
+bulletImpact = ExtResource( 3 )
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2( -4, -0.0272756 )
+shape = SubResource( 1 )
+
+[node name="Sprite" type="Sprite" parent="."]
+position = Vector2( -3, -0.0272756 )
+scale = Vector2( 1, 0.5 )
+texture = ExtResource( 2 )
+
+[node name="RayCast2D" type="RayCast2D" parent="."]
+position = Vector2( -5.83363, 0 )
+enabled = true
+cast_to = Vector2( 30, 0 )
+collision_mask = 5
+
+[node name="Light2D" type="Light2D" parent="."]
+position = Vector2( -4.03449, -0.152103 )
+scale = Vector2( 3.18848, 0.440791 )
+texture = ExtResource( 5 )
+texture_scale = 0.1
+color = Color( 1, 0.929412, 0.541176, 1 )
+energy = 1.32
+range_layer_min = -512
+range_layer_max = 512
+
+[connection signal="body_entered" from="." to="." method="_on_bullet_body_entered"]

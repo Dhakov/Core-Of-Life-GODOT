@@ -1,0 +1,56 @@
+[gd_scene load_steps=5 format=2]
+
+[ext_resource path="res://assets/player/weapon/Particles/spr_muzzle_flash.png" type="Texture" id=1]
+[ext_resource path="res://assets/lights/sprite_light.png" type="Texture" id=2]
+[ext_resource path="res://assets/player/weapon/Particles/MuzzleFlash.gd" type="Script" id=3]
+
+[sub_resource type="Animation" id=1]
+resource_name = "default"
+step = 0.05
+tracks/0/type = "value"
+tracks/0/path = NodePath(".:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 0.05, 0.1, 0.15 ),
+"transitions": PoolRealArray( 1, 1, 1, 1 ),
+"update": 1,
+"values": [ 0, 1, 2, 3 ]
+}
+tracks/1/type = "method"
+tracks/1/path = NodePath(".")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"times": PoolRealArray( 0.2 ),
+"transitions": PoolRealArray( 1 ),
+"values": [ {
+"args": [  ],
+"method": "queue_free"
+} ]
+}
+
+[node name="MuzzleFlash" type="Sprite"]
+texture = ExtResource( 1 )
+centered = false
+offset = Vector2( 0, -14 )
+hframes = 5
+script = ExtResource( 3 )
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+autoplay = "default"
+anims/default = SubResource( 1 )
+
+[node name="Light2D" type="Light2D" parent="."]
+scale = Vector2( 0.779541, 0.43716 )
+texture = ExtResource( 2 )
+color = Color( 1, 0.929412, 0.541176, 1 )
+energy = 1.7
+range_layer_min = -512
+range_layer_max = 512
+shadow_enabled = true
+shadow_buffer_size = 100
