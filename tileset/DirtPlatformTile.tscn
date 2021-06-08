@@ -452,6 +452,7 @@ points = PoolVector2Array( 0, 0, 16, 0, 16, 16, 0, 16 )
 5/z_index = 0
 
 [node name="Platform" type="TileMap" groups=[
+"Grass",
 "Wall",
 ]]
 tile_set = SubResource( 71 )

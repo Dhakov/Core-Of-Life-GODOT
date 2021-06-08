@@ -1,45 +1,30 @@
 extends KinematicBody2D
 
-export (Resource) var footstep_grass;
-export (Resource) var footstep_wood;
+export (Resource) var footstep_grass
+export (Resource) var footstep_wood
+var stats = load("res://Stats.gd").new()
+#export (Resource) var stats
 
 
-const acceleration = 1516;
-const friction = 0.6;
-const air_resistance = 0.05;
-const jump_force = 320;
-const snap_dir = Vector2.DOWN;
-const floor_max_angle = deg2rad(60);
-
-var gravity = 1024;
-var motion = Vector2.ZERO;
-var snap_length = 3;
-var snap_vector = snap_dir * snap_length;
-
-var max_cam_x = 30;
-var max_cam_y = 30;
-var cam_speed = 0.02;
-var max_speed = 156;
-var state = "idle";
-
-var play_fall_sound = false;
-
-var num_combo = 0;
-var max_combo = 3;
-var can_attack = true;
-var can_air_attack = true;
+#Particulas
+export var footstepPart : PackedScene
+export var jumpPart : PackedScene
 
 #Animacion
-onready var animation = $AnimatedSprite/AnimationPlayer;
-onready var anim_scale = $AnimatedSprite;
+onready var animation = $AnimatedSprite/AnimationPlayer
+onready var anim_scale = $AnimatedSprite
 
-#Colisiones de ataques
+#Colisiones
 	#Ataques basicos
-onready var attack_area = $AttackCollisions/BasicAttackArea;
-onready var attack_collision = $AttackCollisions/BasicAttackArea/BasicAttackCollision;
+onready var attack_area = $AttackCollisions/BasicAttackArea
+onready var attack_collision = $AttackCollisions/BasicAttackArea/BasicAttackCollision
 	#Ataque Aereo
-onready var air_attack_area = $AttackCollisions/AirAttackArea;
-onready var air_attack_collision = $AttackCollisions/AirAttackArea/AirAttackCollision;
+onready var air_attack_area = $AttackCollisions/AirAttackArea
+onready var air_attack_collision = $AttackCollisions/AirAttackArea/AirAttackCollision
+
+	#De pie o agachado
+onready var standing_collision = $StandingShape
+onready var crouching_collision = $CrouchingShape
 
 #Armas
 onready var gun = $Position2D/Gun
@@ -48,36 +33,83 @@ onready var head = $PlayerHead
 var deg_for_bullet : float
 
 #Sonidos
-onready var footstep_sound = $AnimatedSprite/AnimationPlayer/FootstepSound;
-onready var snd_attack_1 = $Sounds/AttackSounds/sndAttack1;
-onready var snd_attack_2 = $Sounds/AttackSounds/sndAttack2;
+onready var footstep_sound = $AnimatedSprite/AnimationPlayer/FootstepSound
+onready var snd_attack_1 = $Sounds/AttackSounds/sndAttack1
+onready var snd_attack_2 = $Sounds/AttackSounds/sndAttack2
 
 #Camara y UI
-onready var camera = $Camera2D;
-onready var health_bar = $UiLayer/HealthBar;
+onready var camera = $Camera2D
+onready var health_bar = $UiLayer/HealthBar
 
-#Particulas
-export var footstepPart : PackedScene;
-export var jumpPart : PackedScene;
+const acceleration = 1516
+const friction = 0.6
+const air_resistance = 0.1
+const jump_force = 320
+const snap_dir = Vector2.DOWN
+const floor_max_angle = deg2rad(60)
+
+var gravity = 1024
+var motion = Vector2.ZERO
+var snap_length = 3
+var snap_vector = snap_dir * snap_length
+
+var max_cam_x = 30
+var max_cam_y = 30
+var cam_speed = 0.02
+
+var max_speed = 156
+
+var state = "idle"
+
+var play_fall_sound = false
+
+var num_combo = 0
+var max_combo = 3
+var can_attack = true
+var can_air_attack = true
+
+var is_crouching = false
+var is_sprinting = false
+
+var going_to_attack = false;
 
 #Variables de HP
-export (int) var health_points = 50;
-var max_health_points = 100;
-var regen_amount = 0;
+var health_points = 50
+var max_health_points = 100
+var regen_amount = 0
+
+var can_damage = true
+
+var bullet_dispersion = 300
+var weapon_recoil = 850
+
+var equipped_weapon = 2
+var has_weapon = true
+
+#Ammo types
+var heavy_ammo = 300
+var light_ammo = 300
+
 
 
 func _ready():
 	footstep_sound.stream = footstep_grass;
 	Global.player = self;
+	
+#	print(stats.weapon_stats[1][0])
+	
 	pass;
 
 
 func _physics_process(delta):
 	#Variables de INPUT
-	var key_right = Input.get_action_strength("ui_right");
-	var key_left = Input.get_action_strength("ui_left");
-	var key_jump = Input.is_action_just_pressed("ui_up");
-	var key_aim = Input.is_action_pressed("ui_aim");
+	var key_right = Input.get_action_strength("ui_right")
+	var key_left = Input.get_action_strength("ui_left")
+	var key_jump = Input.is_action_just_pressed("ui_up")
+	var key_crouch = Input.is_action_pressed("ui_down")
+	var key_aim = Input.is_action_pressed("ui_aim")
+	var key_attack = Input.is_action_just_pressed("ui_attack")
+	var key_sprint = Input.is_action_pressed("ui_movement")
 	 
 	var x_input = key_right - key_left;
 	 
@@ -87,8 +119,19 @@ func _physics_process(delta):
 	camera.position.x = clamp(camera.position.x, -max_cam_x, max_cam_x);
 	camera.position.y = clamp(camera.position.y, -max_cam_y, max_cam_y);
 	
+	_cam_Zoom(delta)
+	
 	#Realizar Ataque
-	attack();
+	if !_can_Stand():
+		if key_attack and state != "aiming":
+			if !going_to_attack:
+				$AnimatedSprite/AnimationPlayer/SaveAttackTimer.wait_time = 0.3
+				$AnimatedSprite/AnimationPlayer/SaveAttackTimer.start()
+				going_to_attack = true
+		attack()
+	
+	if is_on_floor():
+		can_air_attack = true;
 	
 	#Probar daño
 	if Input.is_action_just_pressed("ui_cancel"):
@@ -103,10 +146,8 @@ func _physics_process(delta):
 	#Update health value
 	health_points = clamp(health_points, 0, max_health_points)
 	health_bar.set_percent_value_int(float(health_points)/max_health_points * 100);
-	 
-	attack_area.scale.x = anim_scale.scale.x;
-
 	
+	attack_area.scale.x = anim_scale.scale.x;
 	match state:
 		"idle":
 			can_attack = true;
@@ -118,23 +159,35 @@ func _physics_process(delta):
 				anim_scale.scale.x = x_input;
 			motion.y += gravity * delta;
 			
+			if key_crouch:
+				_on_Crouch()
+			else:
+				if !_can_Stand():
+					_on_Stand()
+			
 			if is_on_floor():
-				if key_aim:
+				if key_aim and has_weapon:
 					state = "aiming"
-				can_air_attack = true;
 				if play_fall_sound:
-					var jPart = jumpPart.instance() as Particles2D;
-					get_parent().add_child(jPart);
-					jPart.global_position = position;
+					createJumpParticle()
 					 
 					$Sounds/SoundGrassFall.play();
 					play_fall_sound = false;
 					
 				#Animaciones en el piso
 				if x_input == 0:
-					animation.play("idle");
+					if is_crouching:
+						animation.play("crouch")
+					else:
+						animation.play("idle")
 				else:
-					animation.play("run");
+					if is_crouching:
+						animation.play("crouch_run")
+					else:
+						if is_sprinting:
+							animation.play("sprint")
+						else:
+							animation.play("run")
 					
 				#Cosas de friccion y salto
 				snap_vector = snap_dir * snap_length;
@@ -142,7 +195,7 @@ func _physics_process(delta):
 					motion.x = lerp(motion.x, 0, friction);
 				
 				
-				if (key_jump):
+				if (key_jump and !_can_Stand()):
 					anim_scale.scale.y = 1.5;
 					motion.y = -jump_force;
 						 
@@ -168,7 +221,16 @@ func _physics_process(delta):
 						 
 					snap_vector = Vector2(0, 0);
 			
+			if (key_sprint and x_input != 0 and !is_crouching):
+				is_sprinting = true
+				max_speed = 230
+			
+			if !key_sprint:
+				is_sprinting = false
+			
 			attack_collision.disabled = true;
+			change_weapon()
+			initialize_roll()
 		"attacking":
 			var can_attack_frame = 7;
 			   
@@ -204,12 +266,12 @@ func _physics_process(delta):
 					if x_input != 0 and anim_scale.frame >= can_attack_frame + 3:
 						state = "idle";
 					
-					if interrump_jump and anim_scale.frame >= can_attack_frame + 1:
+					if interrump_jump and anim_scale.frame >= can_attack_frame:
 						motion.y = -jump_force;
 						snap_vector = Vector2(0, 0);
 						state = "idle";
 					
-					if anim_scale.frame >= can_attack_frame:
+					if anim_scale.frame >= can_attack_frame + 1:
 						can_attack = true;
 					else:
 						can_attack = false;
@@ -244,13 +306,37 @@ func _physics_process(delta):
 			else:
 				air_attack_collision.disabled = true;
 		"aiming":
+			
+			if key_crouch:
+				_on_Crouch()
+			else:
+				if !_can_Stand():
+					_on_Stand()
+			
 			motion.x = lerp(motion.x, 0, 0.1)
 			motion.y += (gravity / 3) * delta
 			
-			animation.play("aiming")
+			if is_crouching:
+				animation.play("crouch_aim")
+			else:
+				animation.play("aiming")
 			
 			if Input.is_action_just_released("ui_aim"):
 				state = "idle"
+		"roll":
+			motion.x = lerp(motion.x, 0, 0.05);
+			motion.y += (gravity/2) * delta;
+			
+			anim_scale.scale.x = lerp(anim_scale.scale.x, 1 * sign(anim_scale.scale.x), 0.2)
+			
+			animation.play("roll")
+			
+			if anim_scale.frame >= 1 and anim_scale.frame <= 5:
+				can_damage = false
+			else:
+				can_damage = true
+	
+	
 	gun_stuff()
 	motion.y = move_and_slide_with_snap(motion, snap_vector, Vector2.UP, true, 4, floor_max_angle).y;
 	anim_scale.scale.y = lerp(anim_scale.scale.y, 1, 0.1);
@@ -260,14 +346,23 @@ func createFootstep():
 	get_parent().add_child(fPart);
 	fPart.global_position = position;
 
+func createJumpParticle():
+	if is_on_floor():
+		var jPart = jumpPart.instance() as Particles2D;
+		get_parent().add_child(jPart);
+		jPart.global_position = position;
+
 func returnToIdle():
 	state = "idle";
 
 func attack():
 	var key_attack = Input.is_action_just_pressed("ui_attack")
-	if key_attack and (num_combo < max_combo):
+	if (key_attack or going_to_attack) and (num_combo < max_combo):
 		if is_on_floor() and (state != "air_attack") and state != "aiming":
 			if can_attack:
+				
+				going_to_attack = false
+				
 				anim_scale.frame = 0;
 				var attack_jump = 0;
 				var key_right = Input.get_action_strength("ui_right");
@@ -290,7 +385,7 @@ func attack():
 						timer.set_wait_time(1.2);
 					3:
 						attack_jump = 260;
-						timer.set_wait_time(0.5);
+						timer.set_wait_time(0.4);
 				
 				if x_input != 0:
 					anim_scale.scale.x = x_input;
@@ -303,6 +398,7 @@ func attack():
 		elif !is_on_floor():
 			if can_air_attack:
 				#Ataque aereo
+				going_to_attack = false
 				can_air_attack = false
 				motion.y = 0
 				motion.y -= 70
@@ -310,12 +406,13 @@ func attack():
 				state = "air_attack"
 
 func damaged(damage_recieved):
-	var shake_value = (damage_recieved * 1) / (max_health_points/2.5)
-	health_bar.flash_color = 255;
-	health_points -= damage_recieved;
-	
-	camera.cam_shake(200 * (shake_value * 1.5), 0.1 * (shake_value * 4), 400)
-	health_bar.health_shake(200 * (shake_value), 0.1 * (shake_value * 6), 400)
+	if can_damage:
+		var shake_value = (damage_recieved * 1) / (max_health_points/2.5)
+		health_bar.flash_color = 255;
+		health_points -= damage_recieved;
+		
+		camera.cam_shake(200 * (shake_value * 1.5), 0.1 * (shake_value * 4), 400)
+		health_bar.health_shake(200 * (shake_value), 0.1 * (shake_value * 6), 400)
 
 func _on_AttackTimer_timeout():
 	num_combo = 0;
@@ -329,25 +426,30 @@ func _on_BasicAttackArea_area_entered(area):
 #Hitbox de Ataque aereo
 func _on_AirAttackArea_area_entered(area):
 	if air_attack_collision.disabled == false:
-		attacksOnEnemy(area, 12)
+		attacksOnEnemy(area, 10)
 
 func attacksOnEnemy(body, damage):
 	if body.is_in_group("Enemy_hit"):
 		var enemy_root = body.owner
-#		if enemy_root.state != "dead":
 		var knockback_power;
-			
+		var knockback_type = "weak_damage"
+		
 		match num_combo:
 			1:
 				knockback_power = 100;
+				knockback_type = "weak_damage"
 			2:
 				knockback_power = 150;
+				knockback_type = "medium_damage"
 			3:
 				knockback_power = 240;
+				knockback_type = "hard_damage"
 			_:
 				knockback_power = 120;
+				knockback_type = "weak_damage"
 		
-		enemy_root.damaged(damage, knockback_power, "weak_damage");
+		enemy_root.damaged(damage, knockback_power, knockback_type);
+		enemy_root.create_particle(enemy_root.particles_position.global_position, 15 * num_combo)
 		  
 		var sound_id = [0, 1]
 		var sound = sound_id[randi() % sound_id.size()]
@@ -366,7 +468,10 @@ func gun_stuff() -> void:
 		var mouse_pos : Vector2 = get_global_mouse_position()
 		
 		deg_for_bullet = mouse_pos.angle_to_point(gun.global_position)
-		gun_holder.look_at(mouse_pos)
+#		gun_holder.look_at(mouse_pos)
+		gun_holder.rotation = lerp_angle(gun_holder.rotation, 
+							(mouse_pos - gun_holder.global_position).normalized().angle(), 
+							0.3)
 		gun.real_weapon_rotation = gun_holder.rotation
 		gun.real_weapon_rotation_degrees = gun_holder.rotation_degrees
 		head.look_at(mouse_pos)
@@ -394,21 +499,61 @@ func nextToRightWall():
 func nextToLeftWall():
 	return $WallRaycast/LeftWall.is_colliding()
 
+func _on_Crouch():
+	
+	is_crouching = true
+	standing_collision.disabled = true
+	crouching_collision.disabled = false
+	max_speed = 60
 
+func _on_Stand():
+	
+	is_crouching = false
+	standing_collision.disabled = false
+	crouching_collision.disabled = true
+	max_speed = 156
 
+func _can_Stand():
+	return $CrouchingShape/CanStandRay.is_colliding() or $CrouchingShape/CanStandRay2.is_colliding()
 
+func _cam_Zoom(delta):
+	var target_zoom
+	var target_max_cam
+	
+	if state == "aiming":
+		target_zoom = 1.4
+		target_max_cam = 80
+	else:
+		target_zoom = 1
+		target_max_cam = 30
+	
+	max_cam_x = lerp(max_cam_x, target_max_cam, 4 * delta)
+	max_cam_y = max_cam_x
+	camera.zoom.x = lerp(camera.zoom.x, target_zoom, 4 * delta)
+	camera.zoom.y = camera.zoom.x
 
+func _on_SaveAttackTimer_timeout():
+	going_to_attack = false
+	$AnimatedSprite/AnimationPlayer/SaveAttackTimer.stop()
 
+func change_weapon():
+	var key_change = Input.is_action_just_pressed("ui_select")
+	
+	if key_change:
+		equipped_weapon += 1
+		gun.ammo_in_mag = 0
+	
+	if equipped_weapon > 3:
+		equipped_weapon = 0
 
-
-
-
-
-
-
-
-
-
-
+func initialize_roll():
+	var key_roll = Input.is_action_just_pressed("ui_change_action")
+	
+	if key_roll:
+		state = "roll"
+		anim_scale.scale.x *= 1.6
+		motion.y = 0
+		motion.x = 0
+		motion.x += max_speed * 2 * sign(anim_scale.scale.x);
 
 

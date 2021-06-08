@@ -3,6 +3,8 @@ extends Node
 
 var player = null
 var camera = null
+var cursor = null
+var weapon_hud = null
 
 # Called when the node enters the scene tree for the first time.
 func _ready():

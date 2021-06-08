@@ -34,9 +34,6 @@ func _process(delta):
 			
 #			create_smoke(collision_result, collider)
 			
-			print(collision_result.position.y)
-			print(collider.position.y)
-			
 			#Si es headshot
 			if (collision_result.position.y <= (collider.position.y - head_start_point)):
 				collider.damaged(head_damage, 60, "medium_damage")

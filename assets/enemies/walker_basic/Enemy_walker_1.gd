@@ -1,5 +1,7 @@
 extends KinematicBody2D
 
+export var bloodSplash : PackedScene;
+
 const acceleration = 1516;
 const friction = 0.6;
 const air_resistance = 0.05;
@@ -33,9 +35,10 @@ onready var bullet_polygon = $BulletPoligon
 
 onready var eye_light = $Light2DOrigin
 
+onready var particles_position = $Misc/BloodPosition
 
 func _ready():
-	 pass # Replace with function body.
+	pass
 
 func _process(delta):
 	 
@@ -94,13 +97,13 @@ func _process(delta):
 	if flash_color != 1:
 		flash_color = lerp(flash_color, 1, 15*delta);
 	if state != "dead":
-		animation.modulate = Color(flash_color,flash_color,flash_color)
+#		animation.self_modulate = Color(flash_color,flash_color,flash_color)
+		pass
 
 	motion.y = move_and_slide(motion, Vector2.UP, true).y;
 
 func damaged(damageRecieved, knockbackPower, knockbackType):
 	if state != "dead":
-		
 		var player_scale = Global.player.get_node("AnimatedSprite").scale.x;
 		knockback_type = knockbackType;
 		 
@@ -131,3 +134,16 @@ func returnToIdle():
 
 func die():
 	state = "dead"
+
+
+func create_particle(pos, amount):
+	
+	var blood = bloodSplash.instance() as Particles2D
+	get_node("/root").add_child(blood)
+	blood.amount = amount
+	blood.global_position = pos
+	blood.rotation = rotation
+
+
+
+

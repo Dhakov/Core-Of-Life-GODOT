@@ -1,0 +1,505 @@
+[gd_scene load_steps=30 format=2]
+
+[ext_resource path="res://assets/player/weapon/Fusiles/Fusil de Asalto Militar/player_mfusil_rightt_arm.png" type="Texture" id=1]
+[ext_resource path="res://assets/player/weapon/SecondGun.gd" type="Script" id=2]
+[ext_resource path="res://assets/player/weapon/AudioMFusilShot.gd" type="Script" id=4]
+[ext_resource path="res://assets/sounds/Shots/m4_shot_3.wav" type="AudioStream" id=5]
+[ext_resource path="res://assets/player/weapon/Fusiles/Fusil de Asalto Militar/player_mfusil_left_arm.png" type="Texture" id=7]
+[ext_resource path="res://assets/player/weapon/Fusiles/Fusil de Asalto Militar Pesado/player_hmfusil_right_arm.png" type="Texture" id=8]
+[ext_resource path="res://assets/player/weapon/Fusiles/Fusil de Asalto Militar Pesado/player_hmfusil_left_arm.png" type="Texture" id=9]
+[ext_resource path="res://assets/player/weapon/Fusiles/Fusil de Asalto Pesado/player_hfusil_right_arm.png" type="Texture" id=10]
+[ext_resource path="res://assets/player/weapon/Fusiles/Fusil de Asalto Pesado/player_hfusil_left_arm.png" type="Texture" id=11]
+[ext_resource path="res://assets/player/weapon/Fusiles/Fusil de rafaga/player_rfusil_right_arm.png" type="Texture" id=12]
+[ext_resource path="res://assets/player/weapon/Fusiles/Fusil de rafaga/player_rfusil_left_arm.png" type="Texture" id=13]
+
+[sub_resource type="Curve" id=1]
+_data = [ Vector2( 0, 0.0636363 ), 0.0, 0.0, 0, 0, Vector2( 0.725926, 1 ), -0.799155, -0.799155, 0, 0, Vector2( 1, 0.336364 ), 0.0, 0.0, 0, 0 ]
+
+[sub_resource type="Gradient" id=2]
+offsets = PoolRealArray( 0, 0.0167364, 0.0627615, 1 )
+colors = PoolColorArray( 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1 )
+
+[sub_resource type="AtlasTexture" id=3]
+atlas = ExtResource( 12 )
+region = Rect2( 0, 0, 23, 9 )
+
+[sub_resource type="AtlasTexture" id=4]
+atlas = ExtResource( 8 )
+region = Rect2( 0, 0, 29, 11 )
+
+[sub_resource type="AtlasTexture" id=5]
+atlas = ExtResource( 10 )
+region = Rect2( 0, 0, 25, 8 )
+
+[sub_resource type="SpriteFrames" id=6]
+animations = [ {
+"frames": [ SubResource( 3 ) ],
+"loop": true,
+"name": "famas",
+"speed": 5.0
+}, {
+"frames": [ ExtResource( 1 ) ],
+"loop": true,
+"name": "m4",
+"speed": 5.0
+}, {
+"frames": [ SubResource( 4 ) ],
+"loop": true,
+"name": "an",
+"speed": 5.0
+}, {
+"frames": [ SubResource( 5 ) ],
+"loop": true,
+"name": "ak",
+"speed": 5.0
+} ]
+
+[sub_resource type="Animation" id=7]
+tracks/0/type = "value"
+tracks/0/path = NodePath(".:animation")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 1,
+"values": [ "ak" ]
+}
+tracks/1/type = "value"
+tracks/1/path = NodePath(".:position")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ Vector2( 10, 1 ) ]
+}
+tracks/2/type = "value"
+tracks/2/path = NodePath("../../Line2D:points")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 1,
+"values": [ PoolVector2Array( 5, 0, 107, 0 ) ]
+}
+tracks/3/type = "value"
+tracks/3/path = NodePath("../../Muzzle:position")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ Vector2( 23, 0 ) ]
+}
+tracks/4/type = "value"
+tracks/4/path = NodePath("../../Muzzle/BulletSpawn:position")
+tracks/4/interp = 1
+tracks/4/loop_wrap = true
+tracks/4/imported = false
+tracks/4/enabled = true
+tracks/4/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ Vector2( -13, 0 ) ]
+}
+
+[sub_resource type="Animation" id=8]
+tracks/0/type = "value"
+tracks/0/path = NodePath(".:animation")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 1,
+"values": [ "an" ]
+}
+tracks/1/type = "value"
+tracks/1/path = NodePath(".:position")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ Vector2( 12, -1 ) ]
+}
+tracks/2/type = "value"
+tracks/2/path = NodePath("../../Line2D:points")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 1,
+"values": [ PoolVector2Array( 5, -2, 107, -2 ) ]
+}
+tracks/3/type = "value"
+tracks/3/path = NodePath("../../Muzzle:position")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ Vector2( 27, -2 ) ]
+}
+tracks/4/type = "value"
+tracks/4/path = NodePath("../../Muzzle/BulletSpawn:position")
+tracks/4/interp = 1
+tracks/4/loop_wrap = true
+tracks/4/imported = false
+tracks/4/enabled = true
+tracks/4/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ Vector2( -16, 2.98023e-08 ) ]
+}
+
+[sub_resource type="Animation" id=9]
+resource_name = "famas"
+tracks/0/type = "value"
+tracks/0/path = NodePath(".:animation")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 1,
+"values": [ "famas" ]
+}
+tracks/1/type = "value"
+tracks/1/path = NodePath(".:position")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ Vector2( 10, 1 ) ]
+}
+tracks/2/type = "value"
+tracks/2/path = NodePath("../../Line2D:points")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 1,
+"values": [ PoolVector2Array( 5, 1, 107, 1 ) ]
+}
+tracks/3/type = "value"
+tracks/3/path = NodePath("../../Muzzle:position")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ Vector2( 22, 0 ) ]
+}
+tracks/4/type = "value"
+tracks/4/path = NodePath("../../Muzzle/BulletSpawn:position")
+tracks/4/interp = 1
+tracks/4/loop_wrap = true
+tracks/4/imported = false
+tracks/4/enabled = true
+tracks/4/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ Vector2( -14, 0 ) ]
+}
+
+[sub_resource type="Animation" id=10]
+tracks/0/type = "value"
+tracks/0/path = NodePath(".:animation")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 1,
+"values": [ "m4" ]
+}
+tracks/1/type = "value"
+tracks/1/path = NodePath(".:position")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ Vector2( 12, 1 ) ]
+}
+tracks/2/type = "value"
+tracks/2/path = NodePath("../../Line2D:points")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 1,
+"values": [ PoolVector2Array( 0, 0, 109, 0 ) ]
+}
+tracks/3/type = "value"
+tracks/3/path = NodePath("../../Muzzle:position")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ Vector2( 26.9146, 0.0910742 ) ]
+}
+tracks/4/type = "value"
+tracks/4/path = NodePath("../../Muzzle/BulletSpawn:position")
+tracks/4/interp = 1
+tracks/4/loop_wrap = true
+tracks/4/imported = false
+tracks/4/enabled = true
+tracks/4/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ Vector2( -18.9146, -0.0910742 ) ]
+}
+
+[sub_resource type="AtlasTexture" id=11]
+atlas = ExtResource( 13 )
+region = Rect2( 0, 0, 14, 4 )
+
+[sub_resource type="AtlasTexture" id=12]
+atlas = ExtResource( 9 )
+region = Rect2( 0, 0, 16, 4 )
+
+[sub_resource type="AtlasTexture" id=13]
+atlas = ExtResource( 11 )
+region = Rect2( 0, 0, 10, 3 )
+
+[sub_resource type="SpriteFrames" id=14]
+animations = [ {
+"frames": [ SubResource( 11 ) ],
+"loop": true,
+"name": "famas",
+"speed": 5.0
+}, {
+"frames": [ ExtResource( 7 ) ],
+"loop": true,
+"name": "m4",
+"speed": 5.0
+}, {
+"frames": [ SubResource( 12 ) ],
+"loop": true,
+"name": "an",
+"speed": 5.0
+}, {
+"frames": [ SubResource( 13 ) ],
+"loop": true,
+"name": "ak",
+"speed": 5.0
+} ]
+
+[sub_resource type="Animation" id=15]
+tracks/0/type = "value"
+tracks/0/path = NodePath(".:animation")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 1,
+"values": [ "ak" ]
+}
+tracks/1/type = "value"
+tracks/1/path = NodePath(".:position")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ Vector2( 8, 1 ) ]
+}
+
+[sub_resource type="Animation" id=16]
+tracks/0/type = "value"
+tracks/0/path = NodePath(".:animation")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 1,
+"values": [ "an" ]
+}
+tracks/1/type = "value"
+tracks/1/path = NodePath(".:position")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ Vector2( 10, 0 ) ]
+}
+
+[sub_resource type="Animation" id=17]
+resource_name = "famas"
+tracks/0/type = "value"
+tracks/0/path = NodePath(".:animation")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 1,
+"values": [ "famas" ]
+}
+tracks/1/type = "value"
+tracks/1/path = NodePath(".:position")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ Vector2( 11, 1 ) ]
+}
+
+[sub_resource type="Animation" id=18]
+tracks/0/type = "value"
+tracks/0/path = NodePath(".:animation")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 1,
+"values": [ "m4" ]
+}
+tracks/1/type = "value"
+tracks/1/path = NodePath(".:position")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ Vector2( 11, 1 ) ]
+}
+
+[node name="Gun" type="Node2D"]
+script = ExtResource( 2 )
+
+[node name="Line2D" type="Line2D" parent="."]
+points = PoolVector2Array( 5, 0, 107, 0 )
+width = 3.0
+width_curve = SubResource( 1 )
+default_color = Color( 1, 0, 0, 1 )
+gradient = SubResource( 2 )
+joint_mode = 2
+begin_cap_mode = 2
+end_cap_mode = 2
+
+[node name="RayCast2D" type="RayCast2D" parent="."]
+visible = false
+enabled = true
+cast_to = Vector2( 0, 0 )
+collision_mask = 5
+
+[node name="Position2D" type="Position2D" parent="."]
+
+[node name="rightArm" type="AnimatedSprite" parent="Position2D"]
+position = Vector2( 10, 1 )
+frames = SubResource( 6 )
+animation = "ak"
+
+[node name="RightAnimationPlayer" type="AnimationPlayer" parent="Position2D/rightArm"]
+anims/ak = SubResource( 7 )
+anims/an = SubResource( 8 )
+anims/famas = SubResource( 9 )
+anims/m4 = SubResource( 10 )
+
+[node name="leftArm" type="AnimatedSprite" parent="Position2D"]
+position = Vector2( 11, 1 )
+z_index = -2
+frames = SubResource( 14 )
+animation = "ak"
+
+[node name="LeftAnimationPlayer" type="AnimationPlayer" parent="Position2D/leftArm"]
+anims/ak = SubResource( 15 )
+anims/an = SubResource( 16 )
+anims/famas = SubResource( 17 )
+anims/m4 = SubResource( 18 )
+
+[node name="Muzzle" type="Position2D" parent="."]
+position = Vector2( 23, 0 )
+
+[node name="BulletSpawn" type="Position2D" parent="Muzzle"]
+position = Vector2( -13, 0 )
+
+[node name="ShotCD" type="Timer" parent="."]
+
+[node name="Sounds" type="Node2D" parent="."]
+
+[node name="AudioShot" type="AudioStreamPlayer" parent="Sounds"]
+stream = ExtResource( 5 )
+volume_db = -20.0
+script = ExtResource( 4 )
+
+[connection signal="timeout" from="ShotCD" to="." method="_on_ShotCD_timeout"]

@@ -107,7 +107,7 @@ __meta__ = {
 }
 
 [node name="TextureProgress" type="TextureProgress" parent="."]
-self_modulate = Color( 1.73, 100, 0, 1 )
+self_modulate = Color( 1.16, 1.16, 0, 1 )
 show_behind_parent = true
 margin_left = 2.0
 margin_top = 2.0
@@ -137,7 +137,7 @@ position = Vector2( -11.3055, 13.9504 )
 scale = Vector2( 0.7, 0.7 )
 frames = SubResource( 20 )
 animation = "idle"
-frame = 13
+frame = 8
 playing = true
 
 [node name="Timer" type="Timer" parent="."]
