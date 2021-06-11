@@ -10,12 +10,12 @@
 [ext_resource path="res://assets/UI/EquipedWeaponUI.gd" type="Script" id=8]
 
 [sub_resource type="AtlasTexture" id=1]
-atlas = ExtResource( 5 )
-region = Rect2( 0, 0, 22, 9 )
-
-[sub_resource type="AtlasTexture" id=2]
 atlas = ExtResource( 3 )
 region = Rect2( 0, 0, 29, 9 )
+
+[sub_resource type="AtlasTexture" id=2]
+atlas = ExtResource( 5 )
+region = Rect2( 0, 0, 22, 9 )
 
 [sub_resource type="AtlasTexture" id=3]
 atlas = ExtResource( 4 )
@@ -29,12 +29,12 @@ region = Rect2( 0, 0, 24, 8 )
 animations = [ {
 "frames": [ SubResource( 1 ) ],
 "loop": true,
-"name": "famas",
+"name": "m4",
 "speed": 5.0
 }, {
 "frames": [ SubResource( 2 ) ],
 "loop": true,
-"name": "m4",
+"name": "famas",
 "speed": 5.0
 }, {
 "frames": [ SubResource( 3 ) ],

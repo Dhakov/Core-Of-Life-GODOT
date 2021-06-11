@@ -35,14 +35,14 @@ region = Rect2( 0, 0, 25, 8 )
 
 [sub_resource type="SpriteFrames" id=6]
 animations = [ {
-"frames": [ SubResource( 3 ) ],
-"loop": true,
-"name": "famas",
-"speed": 5.0
-}, {
 "frames": [ ExtResource( 1 ) ],
 "loop": true,
 "name": "m4",
+"speed": 5.0
+}, {
+"frames": [ SubResource( 3 ) ],
+"loop": true,
+"name": "famas",
 "speed": 5.0
 }, {
 "frames": [ SubResource( 4 ) ],
@@ -91,7 +91,7 @@ tracks/2/keys = {
 "times": PoolRealArray( 0 ),
 "transitions": PoolRealArray( 1 ),
 "update": 1,
-"values": [ PoolVector2Array( 5, 0, 107, 0 ) ]
+"values": [ PoolVector2Array( 21, 0, 107, 0 ) ]
 }
 tracks/3/type = "value"
 tracks/3/path = NodePath("../../Muzzle:position")
@@ -153,7 +153,7 @@ tracks/2/keys = {
 "times": PoolRealArray( 0 ),
 "transitions": PoolRealArray( 1 ),
 "update": 1,
-"values": [ PoolVector2Array( 5, -2, 107, -2 ) ]
+"values": [ PoolVector2Array( 26, -2, 107, -2 ) ]
 }
 tracks/3/type = "value"
 tracks/3/path = NodePath("../../Muzzle:position")
@@ -216,7 +216,7 @@ tracks/2/keys = {
 "times": PoolRealArray( 0 ),
 "transitions": PoolRealArray( 1 ),
 "update": 1,
-"values": [ PoolVector2Array( 5, 1, 107, 1 ) ]
+"values": [ PoolVector2Array( 20, 1, 107, 1 ) ]
 }
 tracks/3/type = "value"
 tracks/3/path = NodePath("../../Muzzle:position")
@@ -278,7 +278,7 @@ tracks/2/keys = {
 "times": PoolRealArray( 0 ),
 "transitions": PoolRealArray( 1 ),
 "update": 1,
-"values": [ PoolVector2Array( 0, 0, 109, 0 ) ]
+"values": [ PoolVector2Array( 25, 0, 109, 0 ) ]
 }
 tracks/3/type = "value"
 tracks/3/path = NodePath("../../Muzzle:position")
@@ -319,14 +319,14 @@ region = Rect2( 0, 0, 10, 3 )
 
 [sub_resource type="SpriteFrames" id=14]
 animations = [ {
-"frames": [ SubResource( 11 ) ],
-"loop": true,
-"name": "famas",
-"speed": 5.0
-}, {
 "frames": [ ExtResource( 7 ) ],
 "loop": true,
 "name": "m4",
+"speed": 5.0
+}, {
+"frames": [ SubResource( 11 ) ],
+"loop": true,
+"name": "famas",
 "speed": 5.0
 }, {
 "frames": [ SubResource( 12 ) ],
@@ -451,7 +451,7 @@ bulletScene = ExtResource( 3 )
 MuzzleFlash = ExtResource( 6 )
 
 [node name="Line2D" type="Line2D" parent="."]
-points = PoolVector2Array( 5, 0, 107, 0 )
+points = PoolVector2Array( 21, 0, 107, 0 )
 width = 3.0
 width_curve = SubResource( 1 )
 default_color = Color( 1, 0, 0, 1 )
@@ -461,7 +461,6 @@ begin_cap_mode = 2
 end_cap_mode = 2
 
 [node name="RayCast2D" type="RayCast2D" parent="."]
-visible = false
 enabled = true
 cast_to = Vector2( 0, 0 )
 collision_mask = 5

@@ -148,13 +148,13 @@ func _on_ShotCD_timeout():
 	timer.stop()
 
 func laser():
+	laser_cast.set_cast_to(get_local_mouse_position())
 	var collider = laser_cast.get_collider()
-	laser_cast.set_cast_to(to_local(get_global_mouse_position()))
 	
 	if collider != null:
 		laser.points[1] = to_local(laser_cast.get_collision_point())
 	else:
-		laser.points[1] = to_local(get_global_mouse_position())
+		laser.points[1] = get_local_mouse_position()
 
 func _update_weapon():
 	var is_crouching = Global.player.is_crouching

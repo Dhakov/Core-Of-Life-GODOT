@@ -38,10 +38,13 @@ onready var eye_light = $Light2DOrigin
 onready var particles_position = $Misc/BloodPosition
 
 func _ready():
+#	animation.modulate = animation.modulate.duplicate()
 	pass
 
 func _process(delta):
 	 
+	$Label.text = str(flash_color)
+	
 	dir = sign(Global.player.position.x - position.x);
 	if dir == 0:
 		dir = 1;
@@ -93,12 +96,10 @@ func _process(delta):
 			
 	if animation.scale.y != 1:
 		animation.scale.y = lerp(animation.scale.y, 1, 0.14);
-		  
+#
 	if flash_color != 1:
 		flash_color = lerp(flash_color, 1, 15*delta);
-	if state != "dead":
-#		animation.self_modulate = Color(flash_color,flash_color,flash_color)
-		pass
+	modulate = Color(flash_color,1,1)
 
 	motion.y = move_and_slide(motion, Vector2.UP, true).y;
 
@@ -114,9 +115,9 @@ func damaged(damageRecieved, knockbackPower, knockbackType):
 		animation_player.stop();
 		animation_player.play(knockbackType);
 		 
-		animation.scale.y = .6;
+		animation.scale.y = .6
 		 
-		flash_color = 255;
+		flash_color = 100
 		 
 		#Elegir el sonido de daño
 		var damage_snd_id = [0, 1, 2]

@@ -1,7 +1,6 @@
-[gd_scene load_steps=67 format=2]
+[gd_scene load_steps=68 format=2]
 
 [ext_resource path="res://assets/enemies/walker_basic/basic_enemy_anim.png" type="Texture" id=1]
-[ext_resource path="res://assets/enemies/walker_basic/Enemy_walker_1.gd" type="Script" id=2]
 [ext_resource path="res://assets/lights/sprite_light.png" type="Texture" id=3]
 [ext_resource path="res://assets/enemies/EnemyHealthBar.gd" type="Script" id=4]
 [ext_resource path="res://assets/enemies/EnemyHealthBar.tscn" type="PackedScene" id=5]
@@ -20,196 +19,358 @@
 [ext_resource path="res://assets/enemies/walker_basic/basic_enemy_head_dama_anim.png" type="Texture" id=18]
 [ext_resource path="res://assets/enemies/walker_basic/basic_enemy_hard_dama_anim.png" type="Texture" id=19]
 
-[sub_resource type="AtlasTexture" id=1]
-atlas = ExtResource( 1 )
-region = Rect2( 0, 0, 32, 44 )
+[sub_resource type="GDScript" id=1]
+resource_local_to_scene = true
+script/source = "extends KinematicBody2D
+
+export var bloodSplash : PackedScene;
+
+const acceleration = 1516;
+const friction = 0.6;
+const air_resistance = 0.05;
+const jump_force = 320;
+
+var max_speed = 112;
+
+var gravity = 1024;
+var motion = Vector2.ZERO;
+
+var state = \"idle\";
+var dir = 1;
+var knockback_type = \"weak_damage\";
+var is_moving = false;
+var flash_color = 1;
+
+export (int) var health_points = 50;
+var max_health_points = 50;
+var regen_amount = 5;
+
+onready var animation = $AnimatedSprite;
+onready var animation_player = $AnimatedSprite/AnimationPlayer;
+onready var health_bar = $HpIndex/EnemyHealthBar;
+onready var damage_flash = $damage_flash;
+
+onready var snd_damage_1 = $Sounds/sndDamage1
+onready var snd_damage_2 = $Sounds/sndDamage2
+onready var snd_damage_3 = $Sounds/sndDamage3
+
+onready var bullet_polygon = $BulletPoligon
+
+onready var eye_light = $Light2DOrigin
+
+onready var particles_position = $Misc/BloodPosition
+
+func _ready():
+	var mat = get_node(\"AnimatedSprite\").get_material().duplicate(true)
+
+	get_node(\"AnimatedSprite\").set_material(mat)
+
+	pass
+
+func _physics_process(delta):
+	 
+#	$Label.text = str(flash_color)
+	
+	dir = sign(Global.player.position.x - position.x);
+	if dir == 0:
+		dir = 1;
+	
+	eye_light.scale.x = dir
+	
+	#Actualizar barra de salud
+	health_bar.set_percent_value_int(float(health_points)/max_health_points * 100)
+	#Regeneracion de salud
+	if health_points < max_health_points:
+		health_points = health_points + (regen_amount * delta)
+	health_points = clamp(health_points, 0, max_health_points)
+	
+	#Muerte
+	if health_points <= 1:
+		state = \"dead\"
+		
+	match state:
+		\"idle\":
+			animation.scale.x = dir
+			bullet_polygon.scale.x = dir
+			   
+			if (is_moving):
+				motion.x += dir * acceleration * delta;
+				motion.x = clamp(motion.x, -max_speed, max_speed);
+			
+			motion.y += gravity * delta;
+			   
+			if is_on_floor():
+				#Animaciones en el piso
+				if !is_moving:
+					animation_player.play(\"idle\");
+					
+					#Cosas de friccion y salto
+					if (!is_moving):
+						motion.x = lerp(motion.x, 0, friction);
+		\"knockback\":
+			motion.y += gravity * delta;
+			if motion.x != 0:
+				motion.x = lerp(motion.x, 0, delta * 5);
+		\"dead\":
+			animation_player.play(\"dead\")
+			motion.x = lerp(motion.x, 0, delta * 5)
+#			motion.y += gravity * delta
+			
+			regen_amount = 0
+			set_collision_layer_bit(2, false)
+			$Area2D.set_collision_mask_bit(0, false)
+			
+	if animation.scale.y != 1:
+		animation.scale.y = lerp(animation.scale.y, 1, 0.14);
+#
+	if flash_color != 1:
+		flash_color = lerp(flash_color, 1, 15*delta);
+	
+	animation.modulate = Color(flash_color,1,1)
+
+	motion.y = move_and_slide(motion, Vector2.UP, true).y;
+
+func damaged(damageRecieved, knockbackPower, knockbackType):
+	if state != \"dead\":
+		var player_scale = Global.player.get_node(\"AnimatedSprite\").scale.x;
+		knockback_type = knockbackType;
+		 
+		health_points -= damageRecieved;
+		state = \"knockback\";
+		motion.x = knockbackPower * player_scale;
+		 
+		animation_player.stop();
+		animation_player.play(knockbackType);
+		 
+		animation.scale.y = .6
+		 
+		flash_color = 255
+		 
+		#Elegir el sonido de daño
+		var damage_snd_id = [0, 1, 2]
+		var snd_id = damage_snd_id[randi() % damage_snd_id.size()]
+		match snd_id:
+			0:
+				snd_damage_1.play();
+			1:
+				snd_damage_2.play();
+			2:
+				snd_damage_3.play();
+
+func returnToIdle():
+	state = \"idle\";
+
+func die():
+	state = \"dead\"
+
+
+func create_particle(pos, amount):
+	
+	var blood = bloodSplash.instance() as Particles2D
+	get_node(\"/root\").add_child(blood)
+	blood.amount = amount
+	blood.global_position = pos
+	blood.rotation = rotation
+
+
+
+
+"
+
+[sub_resource type="CanvasItemMaterial" id=49]
+resource_local_to_scene = true
 
 [sub_resource type="AtlasTexture" id=2]
 atlas = ExtResource( 1 )
-region = Rect2( 32, 0, 32, 44 )
+region = Rect2( 0, 0, 32, 44 )
 
 [sub_resource type="AtlasTexture" id=3]
 atlas = ExtResource( 1 )
-region = Rect2( 64, 0, 32, 44 )
+region = Rect2( 32, 0, 32, 44 )
 
 [sub_resource type="AtlasTexture" id=4]
 atlas = ExtResource( 1 )
-region = Rect2( 96, 0, 32, 44 )
+region = Rect2( 64, 0, 32, 44 )
 
 [sub_resource type="AtlasTexture" id=5]
 atlas = ExtResource( 1 )
-region = Rect2( 128, 0, 32, 44 )
+region = Rect2( 96, 0, 32, 44 )
 
 [sub_resource type="AtlasTexture" id=6]
 atlas = ExtResource( 1 )
-region = Rect2( 160, 0, 32, 44 )
+region = Rect2( 128, 0, 32, 44 )
 
 [sub_resource type="AtlasTexture" id=7]
 atlas = ExtResource( 1 )
+region = Rect2( 160, 0, 32, 44 )
+
+[sub_resource type="AtlasTexture" id=8]
+atlas = ExtResource( 1 )
 region = Rect2( 192, 0, 32, 44 )
 
-[sub_resource type="AtlasTexture" id=34]
-atlas = ExtResource( 18 )
-region = Rect2( 0, 0, 50, 44 )
-
-[sub_resource type="AtlasTexture" id=35]
-atlas = ExtResource( 18 )
-region = Rect2( 50, 0, 50, 44 )
-
-[sub_resource type="AtlasTexture" id=36]
-atlas = ExtResource( 18 )
-region = Rect2( 100, 0, 50, 44 )
-
-[sub_resource type="AtlasTexture" id=37]
-atlas = ExtResource( 18 )
-region = Rect2( 150, 0, 50, 44 )
-
-[sub_resource type="AtlasTexture" id=38]
-atlas = ExtResource( 18 )
-region = Rect2( 200, 0, 50, 44 )
-
-[sub_resource type="AtlasTexture" id=39]
-atlas = ExtResource( 18 )
-region = Rect2( 250, 0, 50, 44 )
-
-[sub_resource type="AtlasTexture" id=48]
+[sub_resource type="AtlasTexture" id=9]
 atlas = ExtResource( 17 )
 region = Rect2( 0, 0, 32, 44 )
 
-[sub_resource type="AtlasTexture" id=49]
+[sub_resource type="AtlasTexture" id=10]
 atlas = ExtResource( 17 )
 region = Rect2( 32, 0, 32, 44 )
 
-[sub_resource type="AtlasTexture" id=50]
+[sub_resource type="AtlasTexture" id=11]
 atlas = ExtResource( 17 )
 region = Rect2( 64, 0, 32, 44 )
 
-[sub_resource type="AtlasTexture" id=51]
+[sub_resource type="AtlasTexture" id=12]
 atlas = ExtResource( 17 )
 region = Rect2( 96, 0, 32, 44 )
 
-[sub_resource type="AtlasTexture" id=52]
+[sub_resource type="AtlasTexture" id=13]
 atlas = ExtResource( 17 )
 region = Rect2( 128, 0, 32, 44 )
 
-[sub_resource type="AtlasTexture" id=53]
+[sub_resource type="AtlasTexture" id=14]
 atlas = ExtResource( 17 )
 region = Rect2( 160, 0, 32, 44 )
 
-[sub_resource type="AtlasTexture" id=54]
-atlas = ExtResource( 6 )
-region = Rect2( 0, 0, 32, 44 )
-
-[sub_resource type="AtlasTexture" id=55]
-atlas = ExtResource( 6 )
-region = Rect2( 32, 0, 32, 44 )
-
-[sub_resource type="AtlasTexture" id=56]
-atlas = ExtResource( 6 )
-region = Rect2( 64, 0, 32, 44 )
-
-[sub_resource type="AtlasTexture" id=57]
-atlas = ExtResource( 6 )
-region = Rect2( 96, 0, 32, 44 )
-
-[sub_resource type="AtlasTexture" id=58]
-atlas = ExtResource( 6 )
-region = Rect2( 128, 0, 32, 44 )
-
-[sub_resource type="AtlasTexture" id=59]
-atlas = ExtResource( 6 )
-region = Rect2( 160, 0, 32, 44 )
-
-[sub_resource type="AtlasTexture" id=60]
-atlas = ExtResource( 6 )
-region = Rect2( 192, 0, 32, 44 )
-
-[sub_resource type="AtlasTexture" id=61]
-atlas = ExtResource( 6 )
-region = Rect2( 224, 0, 32, 44 )
-
-[sub_resource type="AtlasTexture" id=62]
+[sub_resource type="AtlasTexture" id=15]
 atlas = ExtResource( 8 )
 region = Rect2( 0, 0, 42, 44 )
 
-[sub_resource type="AtlasTexture" id=63]
+[sub_resource type="AtlasTexture" id=16]
 atlas = ExtResource( 8 )
 region = Rect2( 42, 0, 42, 44 )
 
-[sub_resource type="AtlasTexture" id=64]
+[sub_resource type="AtlasTexture" id=17]
 atlas = ExtResource( 8 )
 region = Rect2( 84, 0, 42, 44 )
 
-[sub_resource type="AtlasTexture" id=65]
+[sub_resource type="AtlasTexture" id=18]
 atlas = ExtResource( 8 )
 region = Rect2( 126, 0, 42, 44 )
 
-[sub_resource type="AtlasTexture" id=66]
+[sub_resource type="AtlasTexture" id=19]
 atlas = ExtResource( 8 )
 region = Rect2( 168, 0, 42, 44 )
 
-[sub_resource type="AtlasTexture" id=67]
+[sub_resource type="AtlasTexture" id=20]
 atlas = ExtResource( 8 )
 region = Rect2( 210, 0, 42, 44 )
 
-[sub_resource type="AtlasTexture" id=72]
+[sub_resource type="AtlasTexture" id=21]
+atlas = ExtResource( 6 )
+region = Rect2( 0, 0, 32, 44 )
+
+[sub_resource type="AtlasTexture" id=22]
+atlas = ExtResource( 6 )
+region = Rect2( 32, 0, 32, 44 )
+
+[sub_resource type="AtlasTexture" id=23]
+atlas = ExtResource( 6 )
+region = Rect2( 64, 0, 32, 44 )
+
+[sub_resource type="AtlasTexture" id=24]
+atlas = ExtResource( 6 )
+region = Rect2( 96, 0, 32, 44 )
+
+[sub_resource type="AtlasTexture" id=25]
+atlas = ExtResource( 6 )
+region = Rect2( 128, 0, 32, 44 )
+
+[sub_resource type="AtlasTexture" id=26]
+atlas = ExtResource( 6 )
+region = Rect2( 160, 0, 32, 44 )
+
+[sub_resource type="AtlasTexture" id=27]
+atlas = ExtResource( 6 )
+region = Rect2( 192, 0, 32, 44 )
+
+[sub_resource type="AtlasTexture" id=28]
+atlas = ExtResource( 6 )
+region = Rect2( 224, 0, 32, 44 )
+
+[sub_resource type="AtlasTexture" id=29]
 atlas = ExtResource( 19 )
 region = Rect2( 0, 0, 50, 44 )
 
-[sub_resource type="AtlasTexture" id=73]
+[sub_resource type="AtlasTexture" id=30]
 atlas = ExtResource( 19 )
 region = Rect2( 50, 0, 50, 44 )
 
-[sub_resource type="AtlasTexture" id=74]
+[sub_resource type="AtlasTexture" id=31]
 atlas = ExtResource( 19 )
 region = Rect2( 100, 0, 50, 44 )
 
-[sub_resource type="AtlasTexture" id=75]
+[sub_resource type="AtlasTexture" id=32]
 atlas = ExtResource( 19 )
 region = Rect2( 150, 0, 50, 44 )
 
-[sub_resource type="AtlasTexture" id=76]
+[sub_resource type="AtlasTexture" id=33]
 atlas = ExtResource( 19 )
 region = Rect2( 200, 0, 50, 44 )
 
-[sub_resource type="AtlasTexture" id=77]
+[sub_resource type="AtlasTexture" id=34]
 atlas = ExtResource( 19 )
 region = Rect2( 250, 0, 50, 44 )
 
-[sub_resource type="SpriteFrames" id=68]
+[sub_resource type="AtlasTexture" id=35]
+atlas = ExtResource( 18 )
+region = Rect2( 0, 0, 50, 44 )
+
+[sub_resource type="AtlasTexture" id=36]
+atlas = ExtResource( 18 )
+region = Rect2( 50, 0, 50, 44 )
+
+[sub_resource type="AtlasTexture" id=37]
+atlas = ExtResource( 18 )
+region = Rect2( 100, 0, 50, 44 )
+
+[sub_resource type="AtlasTexture" id=38]
+atlas = ExtResource( 18 )
+region = Rect2( 150, 0, 50, 44 )
+
+[sub_resource type="AtlasTexture" id=39]
+atlas = ExtResource( 18 )
+region = Rect2( 200, 0, 50, 44 )
+
+[sub_resource type="AtlasTexture" id=40]
+atlas = ExtResource( 18 )
+region = Rect2( 250, 0, 50, 44 )
+
+[sub_resource type="SpriteFrames" id=41]
+resource_local_to_scene = true
 animations = [ {
-"frames": [ SubResource( 1 ), SubResource( 2 ), SubResource( 3 ), SubResource( 4 ), SubResource( 5 ), SubResource( 6 ), SubResource( 7 ) ],
+"frames": [ SubResource( 2 ), SubResource( 3 ), SubResource( 4 ), SubResource( 5 ), SubResource( 6 ), SubResource( 7 ), SubResource( 8 ) ],
 "loop": true,
 "name": "idle",
 "speed": 10.0
 }, {
-"frames": [ SubResource( 34 ), SubResource( 35 ), SubResource( 36 ), SubResource( 37 ), SubResource( 38 ), SubResource( 39 ) ],
-"loop": true,
-"name": "head_damage",
-"speed": 5.0
-}, {
-"frames": [ SubResource( 48 ), SubResource( 49 ), SubResource( 50 ), SubResource( 51 ), SubResource( 52 ), SubResource( 53 ) ],
+"frames": [ SubResource( 9 ), SubResource( 10 ), SubResource( 11 ), SubResource( 12 ), SubResource( 13 ), SubResource( 14 ) ],
 "loop": true,
 "name": "medium_damage",
 "speed": 15.0
 }, {
-"frames": [ SubResource( 54 ), SubResource( 55 ), SubResource( 56 ), SubResource( 57 ), SubResource( 58 ), SubResource( 59 ), SubResource( 60 ), SubResource( 61 ) ],
-"loop": true,
-"name": "dead",
-"speed": 5.0
-}, {
-"frames": [ SubResource( 62 ), SubResource( 63 ), SubResource( 64 ), SubResource( 65 ), SubResource( 66 ), SubResource( 67 ) ],
+"frames": [ SubResource( 15 ), SubResource( 16 ), SubResource( 17 ), SubResource( 18 ), SubResource( 19 ), SubResource( 20 ) ],
 "loop": true,
 "name": "weak_damage",
 "speed": 15.0
 }, {
-"frames": [ SubResource( 72 ), SubResource( 73 ), SubResource( 74 ), SubResource( 75 ), SubResource( 76 ), SubResource( 77 ) ],
+"frames": [ SubResource( 21 ), SubResource( 22 ), SubResource( 23 ), SubResource( 24 ), SubResource( 25 ), SubResource( 26 ), SubResource( 27 ), SubResource( 28 ) ],
+"loop": true,
+"name": "dead",
+"speed": 5.0
+}, {
+"frames": [ SubResource( 29 ), SubResource( 30 ), SubResource( 31 ), SubResource( 32 ), SubResource( 33 ), SubResource( 34 ) ],
 "loop": true,
 "name": "hard_damage",
 "speed": 5.0
+}, {
+"frames": [ SubResource( 35 ), SubResource( 36 ), SubResource( 37 ), SubResource( 38 ), SubResource( 39 ), SubResource( 40 ) ],
+"loop": true,
+"name": "head_damage",
+"speed": 5.0
 } ]
 
-[sub_resource type="Animation" id=69]
+[sub_resource type="Animation" id=42]
 length = 0.8
 tracks/0/type = "value"
 tracks/0/path = NodePath(".:frame")
@@ -252,7 +413,7 @@ tracks/3/path = NodePath(".:self_modulate")
 tracks/3/interp = 1
 tracks/3/loop_wrap = true
 tracks/3/imported = false
-tracks/3/enabled = true
+tracks/3/enabled = false
 tracks/3/keys = {
 "times": PoolRealArray( 0, 0.3, 0.8 ),
 "transitions": PoolRealArray( 1, 1, 1 ),
@@ -274,8 +435,7 @@ tracks/4/keys = {
 } ]
 }
 
-[sub_resource type="Animation" id=47]
-resource_name = "hard_damage"
+[sub_resource type="Animation" id=43]
 length = 0.5
 tracks/0/type = "value"
 tracks/0/path = NodePath(".:frame")
@@ -356,7 +516,7 @@ tracks/6/path = NodePath(".:self_modulate")
 tracks/6/interp = 1
 tracks/6/loop_wrap = true
 tracks/6/imported = false
-tracks/6/enabled = true
+tracks/6/enabled = false
 tracks/6/keys = {
 "times": PoolRealArray( 0, 0.3 ),
 "transitions": PoolRealArray( 1, 1 ),
@@ -364,8 +524,7 @@ tracks/6/keys = {
 "values": [ Color( 100, 100, 100, 1 ), Color( 1, 1, 1, 1 ) ]
 }
 
-[sub_resource type="Animation" id=40]
-resource_name = "head_damage"
+[sub_resource type="Animation" id=44]
 length = 0.5
 tracks/0/type = "value"
 tracks/0/path = NodePath(".:frame")
@@ -446,7 +605,7 @@ tracks/6/path = NodePath(".:self_modulate")
 tracks/6/interp = 1
 tracks/6/loop_wrap = true
 tracks/6/imported = false
-tracks/6/enabled = true
+tracks/6/enabled = false
 tracks/6/keys = {
 "times": PoolRealArray( 0, 0.2 ),
 "transitions": PoolRealArray( 1, 1 ),
@@ -454,7 +613,7 @@ tracks/6/keys = {
 "values": [ Color( 100, 100, 100, 1 ), Color( 1, 1, 1, 1 ) ]
 }
 
-[sub_resource type="Animation" id=70]
+[sub_resource type="Animation" id=45]
 length = 0.7
 loop = true
 tracks/0/type = "value"
@@ -522,7 +681,7 @@ tracks/5/path = NodePath(".:self_modulate")
 tracks/5/interp = 1
 tracks/5/loop_wrap = true
 tracks/5/imported = false
-tracks/5/enabled = true
+tracks/5/enabled = false
 tracks/5/keys = {
 "times": PoolRealArray( 0 ),
 "transitions": PoolRealArray( 1 ),
@@ -554,7 +713,7 @@ tracks/7/keys = {
 "values": [ Vector2( 2, -36 ) ]
 }
 
-[sub_resource type="Animation" id=71]
+[sub_resource type="Animation" id=46]
 length = 0.5
 tracks/0/type = "value"
 tracks/0/path = NodePath(".:frame")
@@ -635,7 +794,7 @@ tracks/6/path = NodePath(".:self_modulate")
 tracks/6/interp = 1
 tracks/6/loop_wrap = true
 tracks/6/imported = false
-tracks/6/enabled = true
+tracks/6/enabled = false
 tracks/6/keys = {
 "times": PoolRealArray( 0, 0.3 ),
 "transitions": PoolRealArray( 1, 1 ),
@@ -643,7 +802,7 @@ tracks/6/keys = {
 "values": [ Color( 100, 100, 100, 1 ), Color( 1, 1, 1, 1 ) ]
 }
 
-[sub_resource type="Animation" id=32]
+[sub_resource type="Animation" id=47]
 length = 0.5
 tracks/0/type = "value"
 tracks/0/path = NodePath(".:frame")
@@ -720,19 +879,19 @@ tracks/5/keys = {
 } ]
 }
 tracks/6/type = "value"
-tracks/6/path = NodePath(".:self_modulate")
+tracks/6/path = NodePath(".:modulate")
 tracks/6/interp = 1
 tracks/6/loop_wrap = true
 tracks/6/imported = false
-tracks/6/enabled = true
+tracks/6/enabled = false
 tracks/6/keys = {
 "times": PoolRealArray( 0, 0.3 ),
 "transitions": PoolRealArray( 1, 1 ),
-"update": 0,
+"update": 1,
 "values": [ Color( 100, 100, 100, 1 ), Color( 1, 1, 1, 1 ) ]
 }
 
-[sub_resource type="RectangleShape2D" id=33]
+[sub_resource type="RectangleShape2D" id=48]
 extents = Vector2( 5, 19 )
 
 [node name="Enemy_walker_1" type="KinematicBody2D" groups=[
@@ -740,7 +899,7 @@ extents = Vector2( 5, 19 )
 ]]
 z_index = -1
 collision_layer = 4
-script = ExtResource( 2 )
+script = SubResource( 1 )
 bloodSplash = ExtResource( 7 )
 
 [node name="HpIndex" type="Node2D" parent="."]
@@ -757,20 +916,20 @@ margin_bottom = -49.0
 script = ExtResource( 4 )
 
 [node name="AnimatedSprite" type="AnimatedSprite" parent="."]
+material = SubResource( 49 )
 position = Vector2( 0, -22 )
-frames = SubResource( 68 )
-animation = "idle"
+frames = SubResource( 41 )
+animation = "dead"
 speed_scale = 0.3
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="AnimatedSprite"]
 autoplay = "idle"
-playback_speed = 0.5
-anims/dead = SubResource( 69 )
-anims/hard_damage = SubResource( 47 )
-anims/head_damage = SubResource( 40 )
-anims/idle = SubResource( 70 )
-anims/medium_damage = SubResource( 71 )
-anims/weak_damage = SubResource( 32 )
+anims/dead = SubResource( 42 )
+anims/hard_damage = SubResource( 43 )
+anims/head_damage = SubResource( 44 )
+anims/idle = SubResource( 45 )
+anims/medium_damage = SubResource( 46 )
+anims/weak_damage = SubResource( 47 )
 
 [node name="BulletPoligon" type="CollisionPolygon2D" parent="."]
 position = Vector2( 0, -19 )
@@ -783,7 +942,7 @@ collision_layer = 0
 
 [node name="BasicCollision" type="CollisionShape2D" parent="Area2D"]
 position = Vector2( 0, -19 )
-shape = SubResource( 33 )
+shape = SubResource( 48 )
 
 [node name="Light2DOrigin" type="Position2D" parent="."]
 

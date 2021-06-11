@@ -10,6 +10,8 @@ var stats = load("res://Stats.gd").new()
 export var footstepPart : PackedScene
 export var jumpPart : PackedScene
 
+var inertia = 100
+
 #Animacion
 onready var animation = $AnimatedSprite/AnimationPlayer
 onready var anim_scale = $AnimatedSprite
@@ -95,8 +97,6 @@ var light_ammo = 300
 func _ready():
 	footstep_sound.stream = footstep_grass;
 	Global.player = self;
-	
-#	print(stats.weapon_stats[1][0])
 	
 	pass;
 
@@ -338,7 +338,14 @@ func _physics_process(delta):
 	
 	
 	gun_stuff()
-	motion.y = move_and_slide_with_snap(motion, snap_vector, Vector2.UP, true, 4, floor_max_angle).y;
+	motion.y = move_and_slide_with_snap(motion, snap_vector, Vector2.UP, true, 4, floor_max_angle, false).y;
+	inertia = abs(motion.x)
+	
+	for i in get_slide_count():
+		var collision = get_slide_collision(i)
+		if collision.collider.is_in_group("bodies"):
+			collision.collider.apply_central_impulse(-collision.normal * inertia)
+	
 	anim_scale.scale.y = lerp(anim_scale.scale.y, 1, 0.1);
 
 func createFootstep():
@@ -421,7 +428,7 @@ func _on_AttackTimer_timeout():
 #Hitbox de ataques basicos
 func _on_BasicAttackArea_area_entered(area):
 	if attack_collision.disabled == false:
-		attacksOnEnemy(area, 10 * num_combo/2)
+		attacksOnEnemy(area, 13 * num_combo/2)
 
 #Hitbox de Ataque aereo
 func _on_AirAttackArea_area_entered(area):
