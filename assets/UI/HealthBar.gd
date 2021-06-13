@@ -23,7 +23,7 @@ var flash_color = 1;
 func _ready():
 	$TextureProgress.value = 100;     
 	 
-func _process(delta):
+func _physics_process(delta):
 	if health.value < second_health_points:
 		second_health_points = lerp(second_health_points, health.value, delta * 1);
 	else:

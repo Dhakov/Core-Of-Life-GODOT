@@ -53,18 +53,18 @@ var ammo_in_mag = 0
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
+#	laser.add_point(to_local(get_global_mouse_position()), 1)
 	pass # Replace with function body.
 
 func _physics_process(delta):
 	_update_weapon()
+	laser_update()
 	scale.x = lerp(scale.x, 1, 0.1);
 	gun_origin.rotation_degrees = lerp(gun_origin.rotation_degrees, 0, 15 * delta);
 	bullet_dispersion = lerp(bullet_dispersion, 0, 1.7 * delta)
 	bullet_dispersion = clamp(bullet_dispersion, 0, max_bullet_dispersion)
 	
 	var key_shoot
-	
-	laser()
 	
 	if Global.player.state == "aiming":
 		if Input.is_action_just_pressed("ui_change_action"):
@@ -117,8 +117,8 @@ func _physics_process(delta):
 		timer.start()
 		
 		gun_origin.rotation_degrees = (rotation_degrees - recoil) * delta
-		  
-		Global.camera.cam_shake(70, 0.2, 70);
+		
+		Global.camera.cam_shake(90, 0.2, 90);
 		
 		var bullet = bulletScene.instance() as Node2D;
 		
@@ -147,14 +147,15 @@ func _on_ShotCD_timeout():
 	can_shot = true;
 	timer.stop()
 
-func laser():
-	laser_cast.set_cast_to(get_local_mouse_position())
+func laser_update() -> void:
+	laser_cast.set_cast_to(to_local(get_global_mouse_position()))
 	var collider = laser_cast.get_collider()
 	
 	if collider != null:
 		laser.points[1] = to_local(laser_cast.get_collision_point())
+		print(collider)
 	else:
-		laser.points[1] = get_local_mouse_position()
+		laser.points[1] = to_local(get_global_mouse_position())
 
 func _update_weapon():
 	var is_crouching = Global.player.is_crouching
@@ -190,7 +191,7 @@ func _ammo_type():
 
 func _minus_bullet():
 	
-	var ammo_type = stats.weapon_stats[equipped_weapon][7]
+#	var ammo_type = stats.weapon_stats[equipped_weapon][7]
 #	match ammo_type:
 #		"light_ammo":
 #			Global.player.light_ammo -= 1

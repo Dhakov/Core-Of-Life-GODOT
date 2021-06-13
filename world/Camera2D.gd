@@ -12,7 +12,7 @@ func _ready():
 	Global.camera = self;
 
 
-func _process(delta):
+func _physics_process(delta):
 	offset = Vector2(rand_range(-shake_amount, shake_amount), 
 	rand_range(shake_amount, -shake_amount)) * delta
 

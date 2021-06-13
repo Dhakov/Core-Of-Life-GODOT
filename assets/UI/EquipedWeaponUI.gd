@@ -11,7 +11,7 @@ func _ready():
 
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
-func _process(delta):
+func _physics_process(delta):
 #	ammo_text.text = str(0) + "/" + str(stats.weapon_stats[Global.player.equipped_weapon][6])
 	var ammo_type = stats.weapon_stats[Global.player.equipped_weapon][7]
 	var ammo_type_show

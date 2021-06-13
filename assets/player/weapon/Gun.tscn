@@ -18,41 +18,41 @@
 _data = [ Vector2( 0, 0.0636363 ), 0.0, 0.0, 0, 0, Vector2( 0.725926, 1 ), -0.799155, -0.799155, 0, 0, Vector2( 1, 0.336364 ), 0.0, 0.0, 0, 0 ]
 
 [sub_resource type="Gradient" id=2]
-offsets = PoolRealArray( 0, 0.0167364, 0.0627615, 1 )
-colors = PoolColorArray( 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1 )
+offsets = PoolRealArray( 0, 0.0167364, 0.407407 )
+colors = PoolColorArray( 0, 0, 0, 0, 1, 0, 0, 1, 1, 0, 0, 1 )
 
 [sub_resource type="AtlasTexture" id=3]
-atlas = ExtResource( 12 )
-region = Rect2( 0, 0, 23, 9 )
-
-[sub_resource type="AtlasTexture" id=4]
-atlas = ExtResource( 8 )
-region = Rect2( 0, 0, 29, 11 )
-
-[sub_resource type="AtlasTexture" id=5]
 atlas = ExtResource( 10 )
 region = Rect2( 0, 0, 25, 8 )
 
+[sub_resource type="AtlasTexture" id=4]
+atlas = ExtResource( 12 )
+region = Rect2( 0, 0, 23, 9 )
+
+[sub_resource type="AtlasTexture" id=5]
+atlas = ExtResource( 8 )
+region = Rect2( 0, 0, 29, 11 )
+
 [sub_resource type="SpriteFrames" id=6]
 animations = [ {
-"frames": [ ExtResource( 1 ) ],
-"loop": true,
-"name": "m4",
-"speed": 5.0
-}, {
 "frames": [ SubResource( 3 ) ],
 "loop": true,
-"name": "famas",
+"name": "ak",
 "speed": 5.0
 }, {
 "frames": [ SubResource( 4 ) ],
 "loop": true,
-"name": "an",
+"name": "famas",
 "speed": 5.0
 }, {
 "frames": [ SubResource( 5 ) ],
 "loop": true,
-"name": "ak",
+"name": "an",
+"speed": 5.0
+}, {
+"frames": [ ExtResource( 1 ) ],
+"loop": true,
+"name": "m4",
 "speed": 5.0
 } ]
 
@@ -91,7 +91,7 @@ tracks/2/keys = {
 "times": PoolRealArray( 0 ),
 "transitions": PoolRealArray( 1 ),
 "update": 1,
-"values": [ PoolVector2Array( 21, 0, 107, 0 ) ]
+"values": [ PoolVector2Array( 21, 0, 0, 0 ) ]
 }
 tracks/3/type = "value"
 tracks/3/path = NodePath("../../Muzzle:position")
@@ -153,7 +153,7 @@ tracks/2/keys = {
 "times": PoolRealArray( 0 ),
 "transitions": PoolRealArray( 1 ),
 "update": 1,
-"values": [ PoolVector2Array( 26, -2, 107, -2 ) ]
+"values": [ PoolVector2Array( 26, -2, 0, 0 ) ]
 }
 tracks/3/type = "value"
 tracks/3/path = NodePath("../../Muzzle:position")
@@ -306,37 +306,37 @@ tracks/4/keys = {
 }
 
 [sub_resource type="AtlasTexture" id=11]
-atlas = ExtResource( 13 )
-region = Rect2( 0, 0, 14, 4 )
-
-[sub_resource type="AtlasTexture" id=12]
-atlas = ExtResource( 9 )
-region = Rect2( 0, 0, 16, 4 )
-
-[sub_resource type="AtlasTexture" id=13]
 atlas = ExtResource( 11 )
 region = Rect2( 0, 0, 10, 3 )
 
+[sub_resource type="AtlasTexture" id=12]
+atlas = ExtResource( 13 )
+region = Rect2( 0, 0, 14, 4 )
+
+[sub_resource type="AtlasTexture" id=13]
+atlas = ExtResource( 9 )
+region = Rect2( 0, 0, 16, 4 )
+
 [sub_resource type="SpriteFrames" id=14]
 animations = [ {
-"frames": [ ExtResource( 7 ) ],
-"loop": true,
-"name": "m4",
-"speed": 5.0
-}, {
 "frames": [ SubResource( 11 ) ],
 "loop": true,
-"name": "famas",
+"name": "ak",
 "speed": 5.0
 }, {
 "frames": [ SubResource( 12 ) ],
 "loop": true,
-"name": "an",
+"name": "famas",
 "speed": 5.0
 }, {
 "frames": [ SubResource( 13 ) ],
 "loop": true,
-"name": "ak",
+"name": "an",
+"speed": 5.0
+}, {
+"frames": [ ExtResource( 7 ) ],
+"loop": true,
+"name": "m4",
 "speed": 5.0
 } ]
 
@@ -451,26 +451,24 @@ bulletScene = ExtResource( 3 )
 MuzzleFlash = ExtResource( 6 )
 
 [node name="Line2D" type="Line2D" parent="."]
-points = PoolVector2Array( 21, 0, 107, 0 )
+points = PoolVector2Array( 26, -2, 0, 0 )
 width = 3.0
 width_curve = SubResource( 1 )
 default_color = Color( 1, 0, 0, 1 )
 gradient = SubResource( 2 )
-joint_mode = 2
-begin_cap_mode = 2
-end_cap_mode = 2
 
 [node name="RayCast2D" type="RayCast2D" parent="."]
 enabled = true
-cast_to = Vector2( 0, 0 )
+exclude_parent = false
+cast_to = Vector2( 300, 0 )
 collision_mask = 5
 
 [node name="Position2D" type="Position2D" parent="."]
 
 [node name="rightArm" type="AnimatedSprite" parent="Position2D"]
-position = Vector2( 10, 1 )
+position = Vector2( 12, -1 )
 frames = SubResource( 6 )
-animation = "ak"
+animation = "an"
 
 [node name="RightAnimationPlayer" type="AnimationPlayer" parent="Position2D/rightArm"]
 anims/ak = SubResource( 7 )
@@ -479,7 +477,7 @@ anims/famas = SubResource( 9 )
 anims/m4 = SubResource( 10 )
 
 [node name="leftArm" type="AnimatedSprite" parent="Position2D"]
-position = Vector2( 11, 1 )
+position = Vector2( 8, 1 )
 z_index = -2
 frames = SubResource( 14 )
 animation = "ak"
@@ -491,10 +489,10 @@ anims/famas = SubResource( 17 )
 anims/m4 = SubResource( 18 )
 
 [node name="Muzzle" type="Position2D" parent="."]
-position = Vector2( 23, 0 )
+position = Vector2( 27, -2 )
 
 [node name="BulletSpawn" type="Position2D" parent="Muzzle"]
-position = Vector2( -13, 0 )
+position = Vector2( -16, 2.98023e-08 )
 
 [node name="SecondShot" type="Timer" parent="."]
 
