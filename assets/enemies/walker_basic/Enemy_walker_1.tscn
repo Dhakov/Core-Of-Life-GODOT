@@ -76,6 +76,8 @@ func _physics_process(delta):
 		dir = 1;
 	
 	eye_light.scale.x = dir
+	animation.scale.x = dir
+	bullet_polygon.scale.x = dir
 	
 	#Actualizar barra de salud
 	health_bar.set_percent_value_int(float(health_points)/max_health_points * 100)
@@ -90,8 +92,6 @@ func _physics_process(delta):
 		
 	match state:
 		\"idle\":
-			animation.scale.x = dir
-			bullet_polygon.scale.x = dir
 			   
 			if (is_moving):
 				motion.x += dir * acceleration * delta;
@@ -257,84 +257,84 @@ atlas = ExtResource( 19 )
 region = Rect2( 250, 0, 50, 44 )
 
 [sub_resource type="AtlasTexture" id=22]
-atlas = ExtResource( 8 )
-region = Rect2( 0, 0, 42, 44 )
+atlas = ExtResource( 6 )
+region = Rect2( 0, 0, 32, 44 )
 
 [sub_resource type="AtlasTexture" id=23]
-atlas = ExtResource( 8 )
-region = Rect2( 42, 0, 42, 44 )
+atlas = ExtResource( 6 )
+region = Rect2( 32, 0, 32, 44 )
 
 [sub_resource type="AtlasTexture" id=24]
-atlas = ExtResource( 8 )
-region = Rect2( 84, 0, 42, 44 )
+atlas = ExtResource( 6 )
+region = Rect2( 64, 0, 32, 44 )
 
 [sub_resource type="AtlasTexture" id=25]
-atlas = ExtResource( 8 )
-region = Rect2( 126, 0, 42, 44 )
+atlas = ExtResource( 6 )
+region = Rect2( 96, 0, 32, 44 )
 
 [sub_resource type="AtlasTexture" id=26]
-atlas = ExtResource( 8 )
-region = Rect2( 168, 0, 42, 44 )
+atlas = ExtResource( 6 )
+region = Rect2( 128, 0, 32, 44 )
 
 [sub_resource type="AtlasTexture" id=27]
-atlas = ExtResource( 8 )
-region = Rect2( 210, 0, 42, 44 )
+atlas = ExtResource( 6 )
+region = Rect2( 160, 0, 32, 44 )
 
 [sub_resource type="AtlasTexture" id=28]
-atlas = ExtResource( 17 )
-region = Rect2( 0, 0, 32, 44 )
-
-[sub_resource type="AtlasTexture" id=29]
-atlas = ExtResource( 17 )
-region = Rect2( 32, 0, 32, 44 )
-
-[sub_resource type="AtlasTexture" id=30]
-atlas = ExtResource( 17 )
-region = Rect2( 64, 0, 32, 44 )
-
-[sub_resource type="AtlasTexture" id=31]
-atlas = ExtResource( 17 )
-region = Rect2( 96, 0, 32, 44 )
-
-[sub_resource type="AtlasTexture" id=32]
-atlas = ExtResource( 17 )
-region = Rect2( 128, 0, 32, 44 )
-
-[sub_resource type="AtlasTexture" id=33]
-atlas = ExtResource( 17 )
-region = Rect2( 160, 0, 32, 44 )
-
-[sub_resource type="AtlasTexture" id=34]
-atlas = ExtResource( 6 )
-region = Rect2( 0, 0, 32, 44 )
-
-[sub_resource type="AtlasTexture" id=35]
-atlas = ExtResource( 6 )
-region = Rect2( 32, 0, 32, 44 )
-
-[sub_resource type="AtlasTexture" id=36]
-atlas = ExtResource( 6 )
-region = Rect2( 64, 0, 32, 44 )
-
-[sub_resource type="AtlasTexture" id=37]
-atlas = ExtResource( 6 )
-region = Rect2( 96, 0, 32, 44 )
-
-[sub_resource type="AtlasTexture" id=38]
-atlas = ExtResource( 6 )
-region = Rect2( 128, 0, 32, 44 )
-
-[sub_resource type="AtlasTexture" id=39]
-atlas = ExtResource( 6 )
-region = Rect2( 160, 0, 32, 44 )
-
-[sub_resource type="AtlasTexture" id=40]
 atlas = ExtResource( 6 )
 region = Rect2( 192, 0, 32, 44 )
 
-[sub_resource type="AtlasTexture" id=41]
+[sub_resource type="AtlasTexture" id=29]
 atlas = ExtResource( 6 )
 region = Rect2( 224, 0, 32, 44 )
+
+[sub_resource type="AtlasTexture" id=30]
+atlas = ExtResource( 17 )
+region = Rect2( 0, 0, 32, 44 )
+
+[sub_resource type="AtlasTexture" id=31]
+atlas = ExtResource( 17 )
+region = Rect2( 32, 0, 32, 44 )
+
+[sub_resource type="AtlasTexture" id=32]
+atlas = ExtResource( 17 )
+region = Rect2( 64, 0, 32, 44 )
+
+[sub_resource type="AtlasTexture" id=33]
+atlas = ExtResource( 17 )
+region = Rect2( 96, 0, 32, 44 )
+
+[sub_resource type="AtlasTexture" id=34]
+atlas = ExtResource( 17 )
+region = Rect2( 128, 0, 32, 44 )
+
+[sub_resource type="AtlasTexture" id=35]
+atlas = ExtResource( 17 )
+region = Rect2( 160, 0, 32, 44 )
+
+[sub_resource type="AtlasTexture" id=36]
+atlas = ExtResource( 8 )
+region = Rect2( 0, 0, 42, 44 )
+
+[sub_resource type="AtlasTexture" id=37]
+atlas = ExtResource( 8 )
+region = Rect2( 42, 0, 42, 44 )
+
+[sub_resource type="AtlasTexture" id=38]
+atlas = ExtResource( 8 )
+region = Rect2( 84, 0, 42, 44 )
+
+[sub_resource type="AtlasTexture" id=39]
+atlas = ExtResource( 8 )
+region = Rect2( 126, 0, 42, 44 )
+
+[sub_resource type="AtlasTexture" id=40]
+atlas = ExtResource( 8 )
+region = Rect2( 168, 0, 42, 44 )
+
+[sub_resource type="AtlasTexture" id=41]
+atlas = ExtResource( 8 )
+region = Rect2( 210, 0, 42, 44 )
 
 [sub_resource type="SpriteFrames" id=42]
 resource_local_to_scene = true
@@ -354,20 +354,20 @@ animations = [ {
 "name": "hard_damage",
 "speed": 5.0
 }, {
-"frames": [ SubResource( 22 ), SubResource( 23 ), SubResource( 24 ), SubResource( 25 ), SubResource( 26 ), SubResource( 27 ) ],
+"frames": [ SubResource( 22 ), SubResource( 23 ), SubResource( 24 ), SubResource( 25 ), SubResource( 26 ), SubResource( 27 ), SubResource( 28 ), SubResource( 29 ) ],
 "loop": true,
-"name": "weak_damage",
-"speed": 15.0
+"name": "dead",
+"speed": 5.0
 }, {
-"frames": [ SubResource( 28 ), SubResource( 29 ), SubResource( 30 ), SubResource( 31 ), SubResource( 32 ), SubResource( 33 ) ],
+"frames": [ SubResource( 30 ), SubResource( 31 ), SubResource( 32 ), SubResource( 33 ), SubResource( 34 ), SubResource( 35 ) ],
 "loop": true,
 "name": "medium_damage",
 "speed": 15.0
 }, {
-"frames": [ SubResource( 34 ), SubResource( 35 ), SubResource( 36 ), SubResource( 37 ), SubResource( 38 ), SubResource( 39 ), SubResource( 40 ), SubResource( 41 ) ],
+"frames": [ SubResource( 36 ), SubResource( 37 ), SubResource( 38 ), SubResource( 39 ), SubResource( 40 ), SubResource( 41 ) ],
 "loop": true,
-"name": "dead",
-"speed": 5.0
+"name": "weak_damage",
+"speed": 15.0
 } ]
 
 [sub_resource type="Animation" id=43]
@@ -697,7 +697,7 @@ tracks/6/enabled = true
 tracks/6/keys = {
 "times": PoolRealArray( 0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6 ),
 "transitions": PoolRealArray( 1, 1, 1, 1, 1, 1, 1 ),
-"update": 1,
+"update": 0,
 "values": [ PoolVector2Array( -4, 19, -4, -9, -1, -10, -3, -11, -3, -21, 7, -21, 7, -11, 4, -10, 5, -9, 5, 19 ), PoolVector2Array( -4, 19, -4, -9, -1, -10, -3, -11, -3, -21, 7, -21, 7, -11, 4, -10, 5, -9, 5, 19 ), PoolVector2Array( -4, 19, -4, -9, -2, -11, -4, -12, -4, -22, 6, -22, 6, -12, 4, -11, 5, -9, 5, 19 ), PoolVector2Array( -4, 19, -4, -9, -2, -12, -5, -13, -5, -24, 5, -24, 5, -13, 2, -12, 5, -9, 5, 19 ), PoolVector2Array( -4, 19, -4, -9, -2, -12, -5, -13, -5, -25, 5, -25, 5, -13, 2, -12, 5, -9, 5, 19 ), PoolVector2Array( -4, 19, -4, -9, -1, -11, -5, -12, -5, -22, 5, -22, 5, -12, 2, -11, 5, -9, 5, 19 ), PoolVector2Array( -4, 19, -4, -9, -1, -10, -3, -11, -3, -21, 7, -21, 7, -11, 4, -10, 5, -9, 5, 19 ) ]
 }
 tracks/7/type = "value"
@@ -919,13 +919,12 @@ script = ExtResource( 4 )
 material = SubResource( 2 )
 position = Vector2( 0, -22 )
 frames = SubResource( 42 )
-animation = "dead"
-frame = 7
+animation = "idle"
 speed_scale = 0.3
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="AnimatedSprite"]
 autoplay = "idle"
-playback_speed = 0.1
+playback_speed = 0.5
 anims/dead = SubResource( 43 )
 anims/hard_damage = SubResource( 44 )
 anims/head_damage = SubResource( 45 )
@@ -935,12 +934,12 @@ anims/weak_damage = SubResource( 48 )
 
 [node name="BulletPoligon" type="CollisionPolygon2D" parent="."]
 position = Vector2( 0, -19 )
-polygon = PoolVector2Array( -4, 19, -4, 1, 1, -3, 6, -5, 6, -8, 17, -8, 17, 3, 7, 3, 5, 2, 5, 19 )
+polygon = PoolVector2Array( -4, 19, -4, -9, -1, -10, -3, -11, -3, -21, 7, -21, 7, -11, 4, -10, 5, -9, 5, 19 )
 
 [node name="Area2D" type="Area2D" parent="." groups=[
 "Enemy_hit",
 ]]
-collision_layer = 0
+collision_layer = 4
 
 [node name="BasicCollision" type="CollisionShape2D" parent="Area2D"]
 position = Vector2( 0, -19 )
@@ -950,7 +949,7 @@ shape = SubResource( 49 )
 
 [node name="Light2D" type="Light2D" parent="Light2DOrigin"]
 visible = false
-position = Vector2( 10, -26 )
+position = Vector2( 2, -36 )
 texture = ExtResource( 3 )
 texture_scale = 0.2
 color = Color( 1, 0, 0, 1 )

@@ -1,0 +1,9 @@
+[gd_resource type="StyleBoxFlat" format=2]
+
+[resource]
+bg_color = Color( 0.984314, 1, 0, 0.47451 )
+border_width_right = 100
+border_color = Color( 0, 0, 0, 0 )
+border_blend = true
+shadow_color = Color( 0, 0, 0, 0.498039 )
+shadow_size = 2

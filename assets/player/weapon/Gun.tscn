@@ -15,44 +15,44 @@
 [ext_resource path="res://assets/player/weapon/Fusiles/Fusil de rafaga/player_rfusil_left_arm.png" type="Texture" id=13]
 
 [sub_resource type="Curve" id=1]
-_data = [ Vector2( 0, 0.0636363 ), 0.0, 0.0, 0, 0, Vector2( 0.725926, 1 ), -0.799155, -0.799155, 0, 0, Vector2( 1, 0.336364 ), 0.0, 0.0, 0, 0 ]
+_data = [ Vector2( 0, 0 ), 0.0, 0.0, 0, 0, Vector2( 0.995454, 0.127273 ), 0.0, 0.0, 0, 0 ]
 
 [sub_resource type="Gradient" id=2]
-offsets = PoolRealArray( 0, 0.0167364, 0.407407 )
-colors = PoolColorArray( 0, 0, 0, 0, 1, 0, 0, 1, 1, 0, 0, 1 )
+offsets = PoolRealArray( 0, 0.047619 )
+colors = PoolColorArray( 0, 0, 0, 0, 1, 1, 1, 1 )
 
 [sub_resource type="AtlasTexture" id=3]
+atlas = ExtResource( 8 )
+region = Rect2( 0, 0, 29, 11 )
+
+[sub_resource type="AtlasTexture" id=4]
 atlas = ExtResource( 10 )
 region = Rect2( 0, 0, 25, 8 )
 
-[sub_resource type="AtlasTexture" id=4]
+[sub_resource type="AtlasTexture" id=5]
 atlas = ExtResource( 12 )
 region = Rect2( 0, 0, 23, 9 )
-
-[sub_resource type="AtlasTexture" id=5]
-atlas = ExtResource( 8 )
-region = Rect2( 0, 0, 29, 11 )
 
 [sub_resource type="SpriteFrames" id=6]
 animations = [ {
 "frames": [ SubResource( 3 ) ],
 "loop": true,
-"name": "ak",
+"name": "an",
 "speed": 5.0
 }, {
 "frames": [ SubResource( 4 ) ],
 "loop": true,
-"name": "famas",
-"speed": 5.0
-}, {
-"frames": [ SubResource( 5 ) ],
-"loop": true,
-"name": "an",
+"name": "ak",
 "speed": 5.0
 }, {
 "frames": [ ExtResource( 1 ) ],
 "loop": true,
 "name": "m4",
+"speed": 5.0
+}, {
+"frames": [ SubResource( 5 ) ],
+"loop": true,
+"name": "famas",
 "speed": 5.0
 } ]
 
@@ -86,7 +86,7 @@ tracks/2/path = NodePath("../../Line2D:points")
 tracks/2/interp = 1
 tracks/2/loop_wrap = true
 tracks/2/imported = false
-tracks/2/enabled = true
+tracks/2/enabled = false
 tracks/2/keys = {
 "times": PoolRealArray( 0 ),
 "transitions": PoolRealArray( 1 ),
@@ -148,7 +148,7 @@ tracks/2/path = NodePath("../../Line2D:points")
 tracks/2/interp = 1
 tracks/2/loop_wrap = true
 tracks/2/imported = false
-tracks/2/enabled = true
+tracks/2/enabled = false
 tracks/2/keys = {
 "times": PoolRealArray( 0 ),
 "transitions": PoolRealArray( 1 ),
@@ -211,7 +211,7 @@ tracks/2/path = NodePath("../../Line2D:points")
 tracks/2/interp = 1
 tracks/2/loop_wrap = true
 tracks/2/imported = false
-tracks/2/enabled = true
+tracks/2/enabled = false
 tracks/2/keys = {
 "times": PoolRealArray( 0 ),
 "transitions": PoolRealArray( 1 ),
@@ -273,7 +273,7 @@ tracks/2/path = NodePath("../../Line2D:points")
 tracks/2/interp = 1
 tracks/2/loop_wrap = true
 tracks/2/imported = false
-tracks/2/enabled = true
+tracks/2/enabled = false
 tracks/2/keys = {
 "times": PoolRealArray( 0 ),
 "transitions": PoolRealArray( 1 ),
@@ -306,37 +306,37 @@ tracks/4/keys = {
 }
 
 [sub_resource type="AtlasTexture" id=11]
+atlas = ExtResource( 9 )
+region = Rect2( 0, 0, 16, 4 )
+
+[sub_resource type="AtlasTexture" id=12]
 atlas = ExtResource( 11 )
 region = Rect2( 0, 0, 10, 3 )
 
-[sub_resource type="AtlasTexture" id=12]
+[sub_resource type="AtlasTexture" id=13]
 atlas = ExtResource( 13 )
 region = Rect2( 0, 0, 14, 4 )
-
-[sub_resource type="AtlasTexture" id=13]
-atlas = ExtResource( 9 )
-region = Rect2( 0, 0, 16, 4 )
 
 [sub_resource type="SpriteFrames" id=14]
 animations = [ {
 "frames": [ SubResource( 11 ) ],
 "loop": true,
-"name": "ak",
+"name": "an",
 "speed": 5.0
 }, {
 "frames": [ SubResource( 12 ) ],
 "loop": true,
-"name": "famas",
-"speed": 5.0
-}, {
-"frames": [ SubResource( 13 ) ],
-"loop": true,
-"name": "an",
+"name": "ak",
 "speed": 5.0
 }, {
 "frames": [ ExtResource( 7 ) ],
 "loop": true,
 "name": "m4",
+"speed": 5.0
+}, {
+"frames": [ SubResource( 13 ) ],
+"loop": true,
+"name": "famas",
 "speed": 5.0
 } ]
 
@@ -450,25 +450,26 @@ script = ExtResource( 2 )
 bulletScene = ExtResource( 3 )
 MuzzleFlash = ExtResource( 6 )
 
+[node name="RayCast2D" type="RayCast2D" parent="."]
+z_as_relative = false
+enabled = true
+exclude_parent = false
+cast_to = Vector2( 0, 0 )
+collision_mask = 5
+
 [node name="Line2D" type="Line2D" parent="."]
-points = PoolVector2Array( 26, -2, 0, 0 )
-width = 3.0
+points = PoolVector2Array( 18, -1, 33, -1 )
+width = 5.0
 width_curve = SubResource( 1 )
 default_color = Color( 1, 0, 0, 1 )
 gradient = SubResource( 2 )
 
-[node name="RayCast2D" type="RayCast2D" parent="."]
-enabled = true
-exclude_parent = false
-cast_to = Vector2( 300, 0 )
-collision_mask = 5
-
 [node name="Position2D" type="Position2D" parent="."]
 
 [node name="rightArm" type="AnimatedSprite" parent="Position2D"]
-position = Vector2( 12, -1 )
+position = Vector2( 12, 1 )
 frames = SubResource( 6 )
-animation = "an"
+animation = "m4"
 
 [node name="RightAnimationPlayer" type="AnimationPlayer" parent="Position2D/rightArm"]
 anims/ak = SubResource( 7 )
@@ -489,10 +490,10 @@ anims/famas = SubResource( 17 )
 anims/m4 = SubResource( 18 )
 
 [node name="Muzzle" type="Position2D" parent="."]
-position = Vector2( 27, -2 )
+position = Vector2( 26.9146, 0.0910742 )
 
 [node name="BulletSpawn" type="Position2D" parent="Muzzle"]
-position = Vector2( -16, 2.98023e-08 )
+position = Vector2( -18.9146, -0.0910742 )
 
 [node name="SecondShot" type="Timer" parent="."]
 

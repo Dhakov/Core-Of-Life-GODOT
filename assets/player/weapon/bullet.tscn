@@ -1,6 +1,6 @@
 [gd_scene load_steps=8 format=2]
 
-[ext_resource path="res://world/RigidBody2D.gd" type="Script" id=1]
+[ext_resource path="res://assets/player/weapon/Bullet.gd" type="Script" id=1]
 [ext_resource path="res://assets/player/weapon/spr_heavy_bullet.png" type="Texture" id=2]
 [ext_resource path="res://assets/player/weapon/Particles/BulletImpact.tscn" type="PackedScene" id=3]
 [ext_resource path="res://assets/player/weapon/Particles/BulletSmoke.tscn" type="PackedScene" id=4]
@@ -38,8 +38,8 @@ cast_to = Vector2( 55, 0 )
 collision_mask = 5
 
 [node name="Light2D" type="Light2D" parent="."]
-position = Vector2( -7.4759, 0.642601 )
-scale = Vector2( 5.45502, 2.91933 )
+position = Vector2( -3.89983, -0.692165 )
+scale = Vector2( 2.94937, 0.935476 )
 texture = ExtResource( 5 )
 texture_scale = 0.1
 color = Color( 1, 0.929412, 0.541176, 1 )

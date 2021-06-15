@@ -15,6 +15,7 @@ var famas_shot = "res://assets/sounds/Shots/famas_shot_1.wav"
 onready var gun_sprite = $Position2D/AnimatedSprite
 onready var gun_origin = $Position2D
 onready var bullet_spawn = $Muzzle/BulletSpawn
+onready var muzzle = $Muzzle
 
 onready var laser_cast = $RayCast2D
 onready var laser = $Line2D
@@ -53,12 +54,11 @@ var ammo_in_mag = 0
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
-#	laser.add_point(to_local(get_global_mouse_position()), 1)
+#	laser.add_point(to_local(laser.get_point_position(1)), 2)
 	pass # Replace with function body.
 
 func _physics_process(delta):
 	_update_weapon()
-	laser_update()
 	scale.x = lerp(scale.x, 1, 0.1);
 	gun_origin.rotation_degrees = lerp(gun_origin.rotation_degrees, 0, 15 * delta);
 	bullet_dispersion = lerp(bullet_dispersion, 0, 1.7 * delta)
@@ -143,19 +143,29 @@ func _physics_process(delta):
 		second_shot()
 	if third_shot:
 		third_shot()
+	laser_update()
 func _on_ShotCD_timeout():
 	can_shot = true;
 	timer.stop()
 
 func laser_update() -> void:
-	laser_cast.set_cast_to(to_local(get_global_mouse_position()))
 	var collider = laser_cast.get_collider()
 	
+	laser_cast.set_cast_to(to_local(get_global_mouse_position()))
+
+	laser.set_point_position(0, muzzle.position)
+	laser.remove_point(1)
+	
 	if collider != null:
-		laser.points[1] = to_local(laser_cast.get_collision_point())
-		print(collider)
+		laser.add_point(to_local(laser_cast.get_collision_point()))
 	else:
-		laser.points[1] = to_local(get_global_mouse_position())
+		laser.add_point(to_local(get_global_mouse_position()), 1)
+	
+	
+#	if laser_cast.is_colliding():
+#		laser.set_point_position(1, to_local(laser_cast.get_collision_point()))
+#	else:
+#		laser.set_point_position(1, to_local(get_global_mouse_position()))
 
 func _update_weapon():
 	var is_crouching = Global.player.is_crouching
@@ -190,13 +200,6 @@ func _ammo_type():
 	return ammo_amount
 
 func _minus_bullet():
-	
-#	var ammo_type = stats.weapon_stats[equipped_weapon][7]
-#	match ammo_type:
-#		"light_ammo":
-#			Global.player.light_ammo -= 1
-#		"heavy_ammo":
-#			Global.player.heavy_ammo -= 1
 	ammo_in_mag -= 1
 
 func reload():

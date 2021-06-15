@@ -1,37 +1,327 @@
-[gd_scene load_steps=3 format=2]
+[gd_scene load_steps=50 format=2]
 
 [ext_resource path="res://Play.gd" type="Script" id=1]
 [ext_resource path="res://Exit.gd" type="Script" id=2]
+[ext_resource path="res://fonts/TitleFont.ttf" type="DynamicFontData" id=3]
+[ext_resource path="res://fonts/GenericFont2.ttf" type="DynamicFontData" id=4]
+[ext_resource path="res://backgrounds/MainMnu/foregroundMenu.png" type="Texture" id=5]
+[ext_resource path="res://backgrounds/forestv2/forest_v2_5.png" type="Texture" id=6]
+[ext_resource path="res://backgrounds/MainMnu/backgroundMenu.png" type="Texture" id=7]
+[ext_resource path="res://backgrounds/MainMnu/MenuTree.png" type="Texture" id=8]
+[ext_resource path="res://shader/wind_shader.shader" type="Shader" id=9]
+[ext_resource path="res://assets/trees/spr_tree_leaves_1.png" type="Texture" id=10]
+[ext_resource path="res://backgrounds/MainMnu/vignette.png" type="Texture" id=11]
+[ext_resource path="res://backgrounds/MainMnu/vignette2.png" type="Texture" id=12]
+[ext_resource path="res://fonts/mainMenuStyle.tres" type="StyleBox" id=13]
+[ext_resource path="res://fonts/MainMenuHoverStyle.tres" type="StyleBox" id=14]
+[ext_resource path="res://assets/lights/sprite_light.png" type="Texture" id=15]
+[ext_resource path="res://assets/ost/menu/ost_main_menu_v3.wav" type="AudioStream" id=16]
+[ext_resource path="res://tileset/wind_2d.shader" type="Shader" id=17]
+[ext_resource path="res://backgrounds/MainMnu/City/Fondo_3.png" type="Texture" id=18]
+[ext_resource path="res://backgrounds/MainMnu/City/Fondo_4.png" type="Texture" id=19]
+[ext_resource path="res://backgrounds/MainMnu/City/Fondo_2.png" type="Texture" id=20]
+[ext_resource path="res://icon.png" type="Texture" id=21]
+[ext_resource path="res://shader/fog.shader" type="Shader" id=22]
+
+[sub_resource type="Shader" id=1]
+code = "shader_type canvas_item;
+uniform float scroll_speed;
+
+void fragment(){
+	vec2 shifteduv = UV;
+	shifteduv.x += TIME * scroll_speed;
+	vec4 col = texture(TEXTURE, shifteduv);
+	COLOR = col;
+}"
+
+[sub_resource type="ShaderMaterial" id=2]
+shader = SubResource( 1 )
+shader_param/scroll_speed = 0.1
+
+[sub_resource type="Shader" id=3]
+code = "shader_type canvas_item;
+uniform float scroll_speed;
+
+void fragment(){
+	vec2 shifteduv = UV;
+	shifteduv.x += TIME * scroll_speed;
+	vec4 col = texture(TEXTURE, shifteduv);
+	COLOR = col;
+}"
+
+[sub_resource type="ShaderMaterial" id=4]
+shader = SubResource( 3 )
+shader_param/scroll_speed = 0.01
+
+[sub_resource type="OccluderPolygon2D" id=5]
+polygon = PoolVector2Array( 16, 61, 16, 101, 38, 122, 79, 133, 103, 175, 104, 219, 107, 243, 136, 247, 173, 251, 166, 193, 184, 69 )
+
+[sub_resource type="ShaderMaterial" id=27]
+shader = ExtResource( 22 )
+shader_param/color = Vector3( 1.044, 0.863, 0.688 )
+shader_param/OCTAVES = 4
+
+[sub_resource type="ShaderMaterial" id=6]
+shader = ExtResource( 9 )
+shader_param/speed = 2.0
+shader_param/minStrength = 0.05
+shader_param/maxStrength = 0.1
+shader_param/strengthScale = 100.0
+shader_param/interval = 3.5
+shader_param/detail = 1.0
+shader_param/distortion = null
+shader_param/heightOffset = 0.8
+shader_param/offset = 0.0
+
+[sub_resource type="ShaderMaterial" id=7]
+shader = ExtResource( 9 )
+shader_param/speed = 3.0
+shader_param/minStrength = 0.05
+shader_param/maxStrength = 0.396
+shader_param/strengthScale = 100.0
+shader_param/interval = 3.5
+shader_param/detail = 1.0
+shader_param/distortion = null
+shader_param/heightOffset = 0.8
+shader_param/offset = 0.0
+
+[sub_resource type="Curve" id=8]
+min_value = -360.0
+max_value = 360.0
+_data = [ Vector2( 0, 1 ), 0.0, 0.0, 0, 0, Vector2( 1, 46.6364 ), -339.656, 0.0, 0, 0 ]
+
+[sub_resource type="CurveTexture" id=9]
+curve = SubResource( 8 )
+
+[sub_resource type="Curve" id=10]
+min_value = -200.0
+max_value = 200.0
+_data = [ Vector2( 0, -50.4545 ), 0.0, 0.0, 0, 0, Vector2( 1, 62.2727 ), 0.0, 0.0, 0, 0 ]
+
+[sub_resource type="CurveTexture" id=11]
+curve = SubResource( 10 )
+
+[sub_resource type="Curve" id=12]
+_data = [ Vector2( 0, 1 ), 0.0, 0.0, 0, 0, Vector2( 1, 0.460227 ), -0.748052, 0.0, 0, 0 ]
+
+[sub_resource type="CurveTexture" id=13]
+curve = SubResource( 12 )
+
+[sub_resource type="ParticlesMaterial" id=14]
+emission_shape = 2
+emission_box_extents = Vector3( 80, 20, 1 )
+flag_disable_z = true
+direction = Vector3( 0, 0, 0 )
+gravity = Vector3( -80, 80, 0 )
+initial_velocity_random = 0.5
+angular_velocity = -108.68
+angular_velocity_random = 1.0
+orbit_velocity = 0.0
+orbit_velocity_random = 0.0
+linear_accel = 33.96
+linear_accel_random = 1.0
+linear_accel_curve = SubResource( 11 )
+radial_accel = 13.21
+radial_accel_random = 0.53
+damping = 96.23
+damping_random = 0.39
+angle_random = 0.51
+angle_curve = SubResource( 9 )
+scale = 4.0
+scale_random = 0.78
+scale_curve = SubResource( 13 )
+hue_variation = 0.12
+hue_variation_random = 0.61
+
+[sub_resource type="StyleBoxFlat" id=15]
+bg_color = Color( 0.996078, 1, 0.678431, 0.827451 )
+border_width_right = 75
+border_width_bottom = 2
+border_color = Color( 0, 0, 0, 0.301961 )
+border_blend = true
+shadow_color = Color( 0, 0, 0, 0.776471 )
+shadow_size = 6
+
+[sub_resource type="StyleBoxEmpty" id=16]
+
+[sub_resource type="DynamicFont" id=17]
+font_data = ExtResource( 4 )
+
+[sub_resource type="DynamicFont" id=18]
+font_data = ExtResource( 4 )
+
+[sub_resource type="StyleBoxFlat" id=19]
+bg_color = Color( 0.984314, 1, 0, 0.47451 )
+border_width_right = 90
+border_color = Color( 0, 0, 0, 0 )
+border_blend = true
+shadow_color = Color( 0, 0, 0, 0.498039 )
+shadow_size = 2
+
+[sub_resource type="DynamicFont" id=20]
+font_data = ExtResource( 4 )
+
+[sub_resource type="ShaderMaterial" id=21]
+shader = ExtResource( 17 )
+shader_param/speed = 2.0
+shader_param/minStrength = null
+shader_param/maxStrength = 0.2
+shader_param/strengthScale = 80.0
+shader_param/interval = 3.5
+shader_param/detail = 1.0
+shader_param/distortion = 0.05
+shader_param/heightOffset = 0.9
+
+[sub_resource type="DynamicFont" id=22]
+size = 64
+outline_size = 1
+outline_color = Color( 0, 0, 0, 1 )
+font_data = ExtResource( 3 )
+
+[sub_resource type="Curve" id=23]
+_data = [ Vector2( 0, 1 ), 0.0, 0.0, 0, 0, Vector2( 1, 0 ), -2.21028, 0.0, 0, 0 ]
+
+[sub_resource type="CurveTexture" id=24]
+curve = SubResource( 23 )
+
+[sub_resource type="ParticlesMaterial" id=25]
+emission_shape = 2
+emission_box_extents = Vector3( 150, 20, 1 )
+flag_disable_z = true
+gravity = Vector3( 0, 10, 0 )
+orbit_velocity = 0.0
+orbit_velocity_random = 0.0
+linear_accel = 100.0
+linear_accel_random = 1.0
+damping = 7.55
+angle = 217.9
+angle_random = 1.0
+scale = 2.0
+scale_curve = SubResource( 24 )
+color = Color( 0.407843, 0.388235, 0.00392157, 1 )
+hue_variation_random = 1.0
+
+[sub_resource type="ShaderMaterial" id=26]
+shader = ExtResource( 9 )
+shader_param/speed = 5.0
+shader_param/minStrength = 0.05
+shader_param/maxStrength = 0.622
+shader_param/strengthScale = 100.0
+shader_param/interval = 3.5
+shader_param/detail = 1.0
+shader_param/distortion = null
+shader_param/heightOffset = 0.95
+shader_param/offset = 0.0
 
 [node name="MainMenu" type="Node2D"]
 
-[node name="Control" type="Control" parent="."]
+[node name="backgroundimage3" type="Sprite" parent="."]
+self_modulate = Color( 1, 0.603922, 0.392157, 1 )
+material = SubResource( 2 )
+z_index = -2
+centered = false
+
+[node name="TextureRect" type="TextureRect" parent="backgroundimage3"]
+self_modulate = Color( 1.5, 1.2, 1, 1 )
+material = SubResource( 4 )
+margin_right = 320.0
+margin_bottom = 180.0
+texture = ExtResource( 7 )
+stretch_mode = 2
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="Label" type="Label" parent="Control"]
-margin_left = 113.0
-margin_top = 38.0
-margin_right = 205.0
-margin_bottom = 58.0
-text = "CORE OF LIFE"
+[node name="LightOccluder2D" type="LightOccluder2D" parent="backgroundimage3"]
+show_behind_parent = true
+position = Vector2( 158, -87 )
+occluder = SubResource( 5 )
+
+[node name="CityBackground" type="Node2D" parent="."]
+
+[node name="bg4" type="Sprite" parent="CityBackground"]
+position = Vector2( 500, 63 )
+scale = Vector2( 0.3, 0.3 )
+z_index = -2
+texture = ExtResource( 19 )
+
+[node name="bg5" type="Sprite" parent="CityBackground"]
+position = Vector2( 397, 63 )
+scale = Vector2( 0.3, 0.3 )
+z_index = -2
+texture = ExtResource( 19 )
+flip_h = true
+
+[node name="bg1" type="Sprite" parent="CityBackground"]
+position = Vector2( -147, 52 )
+scale = Vector2( 0.3, 0.3 )
+z_index = -2
+texture = ExtResource( 18 )
+
+[node name="bg3" type="Sprite" parent="CityBackground"]
+position = Vector2( 641, 46 )
+scale = Vector2( 0.3, 0.3 )
+z_index = -2
+texture = ExtResource( 18 )
+
+[node name="bg2" type="Sprite" parent="CityBackground"]
+position = Vector2( -76, 50 )
+scale = Vector2( 0.3, 0.3 )
+z_index = -2
+texture = ExtResource( 20 )
+
+[node name="foggers" type="Sprite" parent="CityBackground"]
+material = SubResource( 27 )
+position = Vector2( 129, 60 )
+scale = Vector2( 8.98438, 6.60938 )
+z_index = -1
+texture = ExtResource( 21 )
+
+[node name="backgroundimage" type="Sprite" parent="."]
+material = SubResource( 6 )
+position = Vector2( -4, 0 )
+scale = Vector2( 1.025, 1 )
+z_index = -2
+texture = ExtResource( 5 )
+centered = false
+
+[node name="backgroundTree" type="Sprite" parent="."]
+self_modulate = Color( 1, 0.827451, 0.74902, 1 )
+material = SubResource( 7 )
+position = Vector2( 158, -87 )
+z_index = -2
+texture = ExtResource( 8 )
+centered = false
+
+[node name="TreeLeafParticle" type="Particles2D" parent="."]
+position = Vector2( 270, -24 )
+amount = 3
+lifetime = 4.0
+process_material = SubResource( 14 )
+texture = ExtResource( 10 )
+
+[node name="Control" type="Control" parent="."]
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_right = 320.0
+margin_bottom = 180.0
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
 [node name="Play" type="Button" parent="Control"]
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-margin_left = 110.0
-margin_top = 76.0
-margin_right = 205.0
-margin_bottom = 96.0
+margin_left = 10.0
+margin_top = 73.0
+margin_right = 180.0
+margin_bottom = 87.0
 focus_neighbour_top = NodePath(".")
 focus_neighbour_bottom = NodePath("../Exit")
 focus_mode = 1
+custom_styles/hover = ExtResource( 14 )
+custom_styles/pressed = SubResource( 15 )
+custom_styles/focus = SubResource( 16 )
+custom_styles/normal = ExtResource( 13 )
+custom_fonts/font = SubResource( 17 )
 text = "Play"
 script = ExtResource( 1 )
 __meta__ = {
@@ -39,16 +329,17 @@ __meta__ = {
 }
 
 [node name="Exit" type="Button" parent="Control"]
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-margin_left = 117.0
-margin_top = 100.0
-margin_right = 199.0
-margin_bottom = 120.0
+margin_left = 10.0
+margin_top = 91.0
+margin_right = 166.0
+margin_bottom = 105.0
 focus_neighbour_top = NodePath("../Play")
 focus_neighbour_bottom = NodePath("../Credits")
+custom_styles/hover = ExtResource( 14 )
+custom_styles/pressed = SubResource( 15 )
+custom_styles/focus = SubResource( 16 )
+custom_styles/normal = ExtResource( 13 )
+custom_fonts/font = SubResource( 18 )
 text = "Exit"
 script = ExtResource( 2 )
 __meta__ = {
@@ -56,20 +347,82 @@ __meta__ = {
 }
 
 [node name="Credits" type="Button" parent="Control"]
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-margin_left = 122.0
-margin_top = 126.0
-margin_right = 195.0
-margin_bottom = 146.0
+margin_left = 10.0
+margin_top = 109.0
+margin_right = 150.0
+margin_bottom = 123.0
 focus_neighbour_top = NodePath("../Exit")
 focus_neighbour_bottom = NodePath("../Play")
+custom_styles/hover = ExtResource( 14 )
+custom_styles/pressed = SubResource( 15 )
+custom_styles/focus = SubResource( 16 )
+custom_styles/normal = SubResource( 19 )
+custom_fonts/font = SubResource( 20 )
 text = "Credits"
 __meta__ = {
 "_edit_use_anchors_": false
 }
+
+[node name="Label" type="Label" parent="Control"]
+material = SubResource( 21 )
+margin_left = 9.0
+margin_top = 17.0
+margin_right = 311.0
+margin_bottom = 67.0
+custom_fonts/font = SubResource( 22 )
+custom_colors/font_color = Color( 4.05, 1.74, 0, 1 )
+text = "CORE OF LIFE"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Particles2D" type="Particles2D" parent="Control/Label"]
+position = Vector2( 150, 22 )
+z_index = 1
+amount = 15
+lifetime = 3.0
+process_material = SubResource( 25 )
+
+[node name="Foreground" type="Sprite" parent="."]
+self_modulate = Color( 0.635294, 1, 0.0431373, 1 )
+material = SubResource( 26 )
+position = Vector2( -171, -103 )
+z_index = -2
+texture = ExtResource( 6 )
+centered = false
+
+[node name="CanvasModulate" type="CanvasModulate" parent="."]
+position = Vector2( 308, -119 )
+color = Color( 0.223529, 0.180392, 0.0470588, 1 )
+
+[node name="Light2D" type="Light2D" parent="."]
+position = Vector2( 188, -71 )
+texture = ExtResource( 15 )
+texture_scale = 2.0
+range_layer_min = -10
+range_layer_max = 10
+shadow_enabled = true
+shadow_buffer_size = 500
+shadow_filter = 1
+shadow_filter_smooth = 2.1
+
+[node name="Vignette" type="Sprite" parent="."]
+visible = false
+modulate = Color( 1, 1, 1, 0.827451 )
+light_mask = 0
+texture = ExtResource( 11 )
+centered = false
+
+[node name="Vignette2" type="Sprite" parent="."]
+modulate = Color( 1, 1, 1, 0.827451 )
+light_mask = 0
+texture = ExtResource( 12 )
+centered = false
+
+[node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="."]
+stream = ExtResource( 16 )
+pitch_scale = 1.75
+autoplay = true
 
 [connection signal="pressed" from="Control/Play" to="Control/Play" method="_on_Play_pressed"]
 [connection signal="pressed" from="Control/Exit" to="Control/Exit" method="_on_Exit_pressed"]
